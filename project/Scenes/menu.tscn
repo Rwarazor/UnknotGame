@@ -1,0 +1,103 @@
+[gd_scene load_steps=8 format=3 uid="uid://dobojdk2a4kdt"]
+
+[ext_resource type="Script" path="res://Scripts/Menu.gd" id="1_lgw47"]
+[ext_resource type="Texture2D" uid="uid://dy2tl37wg52lk" path="res://assets/menuBackground.png" id="2_xg3t2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fu8as"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hcula"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7u33i"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wc11v"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_color = Color(1, 1, 1, 0)
+shadow_size = 5
+
+[sub_resource type="Theme" id="Theme_6vv4v"]
+Button/colors/font_color = Color(0.556863, 0.556863, 0.556863, 1)
+Button/font_sizes/font_size = 25
+Button/styles/focus = SubResource("StyleBoxEmpty_fu8as")
+Button/styles/hover = SubResource("StyleBoxEmpty_hcula")
+Button/styles/normal = SubResource("StyleBoxEmpty_7u33i")
+Button/styles/pressed = SubResource("StyleBoxFlat_wc11v")
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lgw47")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 8
+texture = ExtResource("2_xg3t2")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_right = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "UNKNOT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NewGameButton" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Новая игра"
+
+[node name="ContinueGameButton" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Продолжить игру"
+
+[node name="TutorialButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Обучение"
+
+[node name="Separator2" type="Control" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ExitButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_6vv4v")
+theme_override_font_sizes/font_size = 20
+text = "Выход"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ContinueGameButton" to="." method="_on_continue_game_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/TutorialButton" to="." method="_on_tutorial_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

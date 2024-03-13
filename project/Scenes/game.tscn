@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://cbdggtmlpwk7n"]
+
+[ext_resource type="Script" path="res://Scripts/game.gd" id="1_7wbfd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_acbo1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ct1wx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s11b3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bfpio"]
+
+[sub_resource type="Theme" id="Theme_51ieo"]
+Button/colors/font_color = Color(0.690196, 0.690196, 0.690196, 1)
+Button/font_sizes/font_size = 25
+Button/styles/focus = SubResource("StyleBoxEmpty_acbo1")
+Button/styles/hover = SubResource("StyleBoxEmpty_ct1wx")
+Button/styles/normal = SubResource("StyleBoxEmpty_s11b3")
+Button/styles/pressed = SubResource("StyleBoxEmpty_bfpio")
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_7wbfd")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+offset_right = 1150.0
+offset_bottom = 644.0
+size_flags_vertical = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="BackToMenuButton" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+size_flags_vertical = 4
+theme = SubResource("Theme_51ieo")
+text = "Вернуться на 
+главный экран"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BackToMenuButton" to="." method="_on_back_to_menu_button_pressed"]

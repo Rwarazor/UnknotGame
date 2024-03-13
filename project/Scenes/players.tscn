@@ -1,0 +1,86 @@
+[gd_scene load_steps=4 format=3 uid="uid://cx0w5rjjyhxv5"]
+
+[ext_resource type="Script" path="res://Scripts/Players.gd" id="1_xw1e8"]
+[ext_resource type="Texture2D" uid="uid://bi6n5s8ckt04" path="res://assets/playersBackground.png" id="2_5bds1"]
+
+[sub_resource type="SystemFont" id="SystemFont_jmt8p"]
+
+[node name="Players" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xw1e8")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_5bds1")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -298.5
+offset_right = 298.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 120
+
+[node name="Separator" type="Control" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_jmt8p")
+theme_override_font_sizes/font_size = 50
+text = "КОЛИЧЕСТВО ИГРОКОВ"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(280, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="OnePlayer" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "1"
+
+[node name="ThreePlayers" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "3"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(280, 50)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="TwoPlayers" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "2"
+
+[node name="FourPlayers" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "4"
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/OnePlayer" to="." method="_on_one_player_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/ThreePlayers" to="." method="_on_three_players_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer2/TwoPlayers" to="." method="_on_two_players_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer2/FourPlayers" to="." method="_on_four_players_pressed"]

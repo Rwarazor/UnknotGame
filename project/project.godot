@@ -11,7 +11,8 @@ config_version=5
 [application]
 
 config/name="Unknot Game"
-config/features=PackedStringArray("4.3", "GL Compatibility")
+run/main_scene="res://Scenes/menu.tscn"
+config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [rendering]
