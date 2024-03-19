@@ -1,6 +1,20 @@
-[gd_scene load_steps=7 format=3 uid="uid://cbdggtmlpwk7n"]
+[gd_scene load_steps=34 format=3 uid="uid://cbdggtmlpwk7n"]
 
 [ext_resource type="Script" path="res://Scripts/game.gd" id="1_7wbfd"]
+[ext_resource type="Script" path="res://Scripts/zoom.gd" id="2_4a8fq"]
+[ext_resource type="Texture2D" uid="uid://bqyq78b55hdwp" path="res://assets/edgeTile.png" id="2_i73xq"]
+[ext_resource type="Texture2D" uid="uid://ccq2xnd4mh8i2" path="res://assets/edgeTileAlt.png" id="3_wfksh"]
+[ext_resource type="Script" path="res://Scripts/edgesTileMap.gd" id="4_y7ov5"]
+[ext_resource type="Texture2D" uid="uid://cs148lp16tu6x" path="res://assets/edgeTileAltSelected.png" id="5_2julx"]
+[ext_resource type="Texture2D" uid="uid://cvwg0qwx6q6qf" path="res://assets/edgeTileHovered.png" id="5_tv0kh"]
+[ext_resource type="Texture2D" uid="uid://cyoej7h2ywkes" path="res://assets/edgeTileAltHovered.png" id="6_bxwoi"]
+[ext_resource type="Texture2D" uid="uid://hesyw407j12g" path="res://assets/edgeTileSelected.png" id="7_kq5mi"]
+[ext_resource type="Texture2D" uid="uid://bwtj6b5bc6fx3" path="res://assets/dotTile.png" id="7_orf88"]
+[ext_resource type="Texture2D" uid="uid://dpq083wqjdqpi" path="res://assets/dotTileSelected.png" id="8_47n8j"]
+[ext_resource type="Texture2D" uid="uid://dgbpjl0xpt5nn" path="res://assets/edgeTileFuture.png" id="9_k3tl7"]
+[ext_resource type="Script" path="res://Scripts/vertexTileMap.gd" id="9_l4svq"]
+[ext_resource type="Texture2D" uid="uid://bg5bnuywekwv6" path="res://assets/dotTileHovered.png" id="9_teopa"]
+[ext_resource type="Texture2D" uid="uid://bpwcee1033k8j" path="res://assets/edgeTileAltFuture.png" id="10_v2h7l"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_acbo1"]
 
@@ -18,21 +32,120 @@ Button/styles/hover = SubResource("StyleBoxEmpty_ct1wx")
 Button/styles/normal = SubResource("StyleBoxEmpty_s11b3")
 Button/styles/pressed = SubResource("StyleBoxEmpty_bfpio")
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_axps3"]
+texture = ExtResource("2_i73xq")
+texture_region_size = Vector2i(48, 48)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iwo18"]
+texture = ExtResource("3_wfksh")
+texture_region_size = Vector2i(48, 48)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_r77kr"]
+texture = ExtResource("5_tv0kh")
+texture_region_size = Vector2i(48, 48)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i8yvx"]
+texture = ExtResource("6_bxwoi")
+texture_region_size = Vector2i(48, 48)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_m65ch"]
+texture = ExtResource("7_kq5mi")
+texture_region_size = Vector2i(48, 48)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_knop5"]
+texture = ExtResource("5_2julx")
+texture_region_size = Vector2i(48, 48)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kfulk"]
+texture = ExtResource("9_k3tl7")
+texture_region_size = Vector2i(48, 48)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vwofr"]
+texture = ExtResource("10_v2h7l")
+texture_region_size = Vector2i(48, 48)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_h1xgk"]
+tile_size = Vector2i(48, 48)
+sources/0 = SubResource("TileSetAtlasSource_axps3")
+sources/1 = SubResource("TileSetAtlasSource_iwo18")
+sources/2 = SubResource("TileSetAtlasSource_r77kr")
+sources/3 = SubResource("TileSetAtlasSource_i8yvx")
+sources/5 = SubResource("TileSetAtlasSource_knop5")
+sources/4 = SubResource("TileSetAtlasSource_m65ch")
+sources/6 = SubResource("TileSetAtlasSource_kfulk")
+sources/7 = SubResource("TileSetAtlasSource_vwofr")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mwftc"]
+texture = ExtResource("7_orf88")
+texture_region_size = Vector2i(48, 48)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_aimpw"]
+texture = ExtResource("9_teopa")
+texture_region_size = Vector2i(48, 48)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jnpln"]
+texture = ExtResource("8_47n8j")
+texture_region_size = Vector2i(48, 48)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_ftpqk"]
+tile_size = Vector2i(48, 48)
+sources/0 = SubResource("TileSetAtlasSource_mwftc")
+sources/1 = SubResource("TileSetAtlasSource_aimpw")
+sources/2 = SubResource("TileSetAtlasSource_jnpln")
+
 [node name="Game" type="Node2D"]
 script = ExtResource("1_7wbfd")
+WIDTH_TILES = 30
+HEIGHT_TILES = 30
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="UnknoterNode" type="UnknoterNode" parent="."]
+
+[node name="Zoom" type="Camera2D" parent="."]
+position = Vector2(576, 324)
+script = ExtResource("2_4a8fq")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="UI"]
 offset_right = 1150.0
 offset_bottom = 644.0
 size_flags_vertical = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer"]
 custom_minimum_size = Vector2(300, 50)
 layout_mode = 2
 size_flags_vertical = 8
 alignment = 1
 
-[node name="BackToMenuButton" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="UI/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(300, 50)
+layout_mode = 2
+text = "Переключить режим
+"
+
+[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/HBoxContainer"]
+modulate = Color(1, 0.105882, 1, 1)
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Режим: ребро"
+horizontal_alignment = 1
+
+[node name="BackToMenuButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(300, 50)
 layout_mode = 2
 size_flags_vertical = 4
@@ -40,4 +153,30 @@ theme = SubResource("Theme_51ieo")
 text = "Вернуться на 
 главный экран"
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/BackToMenuButton" to="." method="_on_back_to_menu_button_pressed"]
+[node name="EdgeTileMap" type="TileMap" parent="."]
+position = Vector2(679, -679)
+rotation = 0.785398
+tile_set = SubResource("TileSet_h1xgk")
+format = 2
+layer_1/name = "Layer1"
+layer_1/tile_data = PackedInt32Array()
+script = ExtResource("4_y7ov5")
+
+[node name="VertexTileMap" type="TileMap" parent="."]
+position = Vector2(679, -713)
+rotation = 0.785398
+tile_set = SubResource("TileSet_ftpqk")
+format = 2
+layer_1/name = "Layer1"
+layer_1/tile_data = PackedInt32Array()
+script = ExtResource("9_l4svq")
+
+[connection signal="pressed" from="UI/MarginContainer/VBoxContainer/HBoxContainer/Button" to="." method="_on_switch_turn_mode_button_pressed"]
+[connection signal="pressed" from="UI/MarginContainer/VBoxContainer/BackToMenuButton" to="." method="_on_back_to_menu_button_pressed"]
+[connection signal="edgeHovered" from="EdgeTileMap" to="." method="_on_edge_hovered"]
+[connection signal="edgePressed" from="EdgeTileMap" to="." method="_on_edge_pressed"]
+[connection signal="edgeUnhovered" from="EdgeTileMap" to="." method="_on_edge_unhovered"]
+[connection signal="edgeUnpressed" from="EdgeTileMap" to="." method="_on_edge_unpressed"]
+[connection signal="vertexHovered" from="VertexTileMap" to="." method="_on_vertex_hovered"]
+[connection signal="vertexPressed" from="VertexTileMap" to="." method="_on_vertex_pressed"]
+[connection signal="vertexUnhovered" from="VertexTileMap" to="." method="_on_vertex_unhovered"]
