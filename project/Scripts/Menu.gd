@@ -11,7 +11,7 @@ func _on_continue_game_button_pressed():
 
 
 func _on_tutorial_button_pressed():
-	pass # Отображение правил игры
+	get_tree().change_scene_to_file("res://Scenes/rules.tscn")
 
 # Выход из игры
 func _on_exit_button_pressed():

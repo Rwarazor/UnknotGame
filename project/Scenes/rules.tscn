@@ -1,0 +1,114 @@
+[gd_scene load_steps=4 format=3 uid="uid://ck56ipivmx5eb"]
+
+[ext_resource type="Script" path="res://Scripts/rules.gd" id="1_a5ifw"]
+[ext_resource type="Texture2D" uid="uid://dy2tl37wg52lk" path="res://assets/menuBackground.png" id="1_igh4w"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ddjl"]
+bg_color = Color(0.137255, 0.137255, 0.137255, 0.768627)
+
+[node name="Rules" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_a5ifw")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_top = 2.0
+offset_right = 1.0
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_igh4w")
+expand_mode = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -450.0
+offset_top = -247.5
+offset_right = 450.0
+offset_bottom = 247.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4ddjl")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 30
+text = "THE UNKNOT GAME
+"
+horizontal_alignment = 1
+
+[node name="Label5" type="Label" parent="ScrollContainer/VBoxContainer"]
+auto_translate_mode = 1
+custom_minimum_size = Vector2(0, 900)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 18
+text = "     Unknot - увлекательгая и сложная топологическая игра. Ты можешь 
+использовать ее для обучения основам топологии и математической 
+дисциплине, изучая свойства пространства, сохраняющиеся
+ при непрерывных преобразованиях. Unknot также поможет тебе в 
+исследовании свойств узлов и зацеплений, а также в разработке
+ новых алгоритмов и стратегий их распутывания.
+
+     Игра проводится на игровом поле, которое является двумерной
+ топологической плоскостью. Принимать участие в игре могут от 1 до 4
+человек.
+     Каждый игрок владеет своей компонентой (линией), которую он может
+ манипулировать в рамках указанных ниже действий.
+На каждом ходу игрока он может выполнить ОДНО из двух возможных действий!
+    1) Поменять тип пересечения своей компоненты с любой другой компонентой
+    2) Переместить свою компоненту (изотопически), то есть выбрать один или
+несколько связно идущих друг за другом вдоль одной прямой сегментов своей
+компоненты и сдвинуть их параллельно. 
+
+     У каждого игрока имеется ограниченный запас энергии, который
+расходуется на удлинение соединения. Бесконечное удлинение невозможно!
+Если при перемещении компонента она пересекает другие компоненты,
+ то по умолчанию она идёт сверху на новых пересечениях.
+ 
+     Игра продолжается до тех пор, пока не закончится энергия у всех
+игроков, или пока все компоненты не станут раздельными (не имеют пересечений).
+
+     Цель игры – избавиться от всех пересечений на своей линии, не истратив
+при этом все очки энергии. Желаем удачи!
+"
+horizontal_alignment = 3
+
+[node name="DoneButton" type="Button" parent="."]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -8.0
+offset_right = 4.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "Понятно!"
+
+[connection signal="pressed" from="DoneButton" to="." method="_on_done_button_pressed"]
+[connection signal="pressed" from="DoneButton" to="." method="_on_button_pressed"]
