@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dobojdk2a4kdt"]
 
 [ext_resource type="Script" path="res://Scripts/Menu.gd" id="1_lgw47"]
-[ext_resource type="Texture2D" uid="uid://dy2tl37wg52lk" path="res://assets/menuBackground.png" id="2_xg3t2"]
+[ext_resource type="Texture2D" uid="uid://dy2tl37wg52lk" path="res://assets/tiles/menuBackground.png" id="2_xg3t2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fu8as"]
 
