@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://ck56ipivmx5eb"]
 
 [ext_resource type="Script" path="res://Scripts/rules.gd" id="1_a5ifw"]
-[ext_resource type="Texture2D" uid="uid://dy2tl37wg52lk" path="res://assets/menuBackground.png" id="1_igh4w"]
+[ext_resource type="Texture2D" uid="uid://dy2tl37wg52lk" path="res://assets/tiles/menuBackground.png" id="1_igh4w"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ddjl"]
 bg_color = Color(0.137255, 0.137255, 0.137255, 0.768627)
@@ -110,5 +110,5 @@ grow_vertical = 0
 theme_override_font_sizes/font_size = 20
 text = "Понятно!"
 
-[connection signal="pressed" from="DoneButton" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="DoneButton" to="." method="_on_done_button_pressed"]
+[connection signal="pressed" from="DoneButton" to="." method="_on_button_pressed"]
