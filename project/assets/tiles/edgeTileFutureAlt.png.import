@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bg5bnuywekwv6"
-path="res://.godot/imported/dotTileHovered.png-67e7d35cdd36d1f0dbc0e0ab5f2891c8.ctex"
+uid="uid://bpwcee1033k8j"
+path="res://.godot/imported/edgeTileFutureAlt.png-1af3f9a74c79cd3388f01b70dba55d04.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/dotTileHovered.png"
-dest_files=["res://.godot/imported/dotTileHovered.png-67e7d35cdd36d1f0dbc0e0ab5f2891c8.ctex"]
+source_file="res://assets/tiles/edgeTileFutureAlt.png"
+dest_files=["res://.godot/imported/edgeTileFutureAlt.png-1af3f9a74c79cd3388f01b70dba55d04.ctex"]
 
 [params]
 

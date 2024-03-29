@@ -1,5 +1,11 @@
 extends TileMap
 
+@export var BACKGROUND_LAYER = 0
+@export var BACKGROUND_TILE = 0
+@export var BACKGROUND_EDGE_TILE = 1
+@export var BACKGROUND_EDGE_TILE_ALT = 2
+
+
 var widthTiles
 var heightTiles
 
@@ -8,10 +14,12 @@ signal edgeUnhovered
 signal edgePressed
 signal edgeUnpressed
 
+var INFF = 1000
+
 func edge_to_tilemap_coords(coords: Vector2i) -> Vector2i:
 	return Vector2i(
-		coords[0] / 2 + coords[1] / 2,
-		widthTiles - (coords[0] + 1) / 2 + coords[1] / 2
+		(coords[0] + INFF) / 2 + (coords[1] + INFF) / 2 - INFF,
+		widthTiles - (coords[0] + 1 + INFF) / 2 + (coords[1] + INFF) / 2
 	)
 
 func tilemap_to_edge_coords(coords: Vector2i) -> Vector2i:
@@ -34,24 +42,24 @@ func edge_is_horizontal(coords: Vector2i) -> int:
 func reset(width: int, height: int) -> void:
 	widthTiles = width
 	heightTiles = height
-	for x in range(1, 2 * widthTiles, 2):
-		for y in range(0, 2 * heightTiles + 1, 2):
-			set_cell(0, edge_to_tilemap_coords(Vector2i(x, y)), 1, Vector2i(0, 0), 0)
+	for x in range(-2, 2 * widthTiles + 3, 1):
+		for y in range(-2, 2 * heightTiles + 3, 1):
+			if (x + y) % 2 == 0:
+				continue
+			if edge_coords_out_of_bounds(Vector2i(x, y)):
+				set_cell(BACKGROUND_LAYER, edge_to_tilemap_coords(Vector2i(x, y)), BACKGROUND_TILE, Vector2i(0, 0), 0)
+			elif !edge_is_horizontal(Vector2i(x, y)):
+				set_cell(BACKGROUND_LAYER, edge_to_tilemap_coords(Vector2i(x, y)), BACKGROUND_EDGE_TILE, Vector2i(0, 0), 0)
+			else:
+				set_cell(BACKGROUND_LAYER, edge_to_tilemap_coords(Vector2i(x, y)), BACKGROUND_EDGE_TILE_ALT, Vector2i(0, 0), 0)
 
-	for x in range(0, 2 * widthTiles + 1, 2):
-		for y in range(1, 2 * heightTiles, 2):
-			set_cell(0, edge_to_tilemap_coords(Vector2i(x, y)), 0, Vector2i(0, 0), 0)
-
-func draw_selected_edge(coords: Vector2i, source_id: int) -> void:
+func change_tile(layer: int, coords: Vector2i, source_id: int) -> void:
 	var tile = edge_to_tilemap_coords(coords)
-	set_cell(1, tile, source_id, Vector2i(0, 0), 0)
+	set_cell(layer, tile, source_id, Vector2i(0, 0), 0)
 
-func clear_selected_edge(coords: Vector2i) -> void:
+func clear_tile(layer, coords: Vector2i) -> void:
 	var tile = edge_to_tilemap_coords(coords)
-	set_cell(1, tile)
-
-func clear_all_selected_edges() -> void:
-	clear_layer(1)
+	set_cell(layer, tile)
 
 var last_hovered_edge = null
 

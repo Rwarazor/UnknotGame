@@ -13,7 +13,18 @@ enum STATE {
 }
 var current_state = STATE.START_SELECTING_EDGES
 
+var current_player = 0
+
 @onready var unknoter = $UnknoterNode
+
+var EDGE_TILE_COLOR = 3
+var EDGE_TILE_HOVERED = 5
+var EDGE_TILE_SELECTED = 7
+var FUTURE_EDGE_SOURCE_ID = 9
+
+var VERTEX_TILE_COLOR = 0
+var VERTEX_TILE_HOVERED = 1
+var VERTEX_TILE_SELECTED = 2
 
 func _on_back_to_menu_button_pressed():
 	get_tree().change_scene_to_file("res://Scenes/menu.tscn")
@@ -25,12 +36,40 @@ func _on_switch_turn_mode_button_pressed() -> void:
 	else:
 		current_state = STATE.START_SELECTING_EDGES
 		$UI/MarginContainer/VBoxContainer/HBoxContainer/Label.text = "Режим: ребро"
-	$EdgeTileMap.clear_all_selected_edges()
-	$VertexTileMap.clear_all_selected_vertices()
+	_clear_edge_tiles()
+	_clear_vertex_tiles()
+
+var player_colors = []
 
 func _ready() -> void:
 	$VertexTileMap.reset(WIDTH_TILES, HEIGHT_TILES)
 	$EdgeTileMap.reset(WIDTH_TILES, HEIGHT_TILES)
+	$UnknoterNode.reset(Global.players, WIDTH_TILES, HEIGHT_TILES)
+
+	for player in range(Global.players):
+		var color = Color()
+		color.r = randf_range(0, 1)
+		color.g = randf_range(0, 1)
+		color.b = randf_range(0, 1)
+		player_colors.push_back(color)
+		$EdgeTileMap.add_layer(1 + player)
+		$EdgeTileMap.set_layer_modulate(1 + player, color)
+		$VertexTileMap.add_layer(player)
+		$VertexTileMap.set_layer_modulate(player, color)
+
+	for x in range(0, 2 * WIDTH_TILES + 1):
+		for y in range(0, 2 * HEIGHT_TILES + 1):
+			if (x & 1) and (y & 1):
+				continue
+			if (x + y) & 1:
+				var player = $UnknoterNode.get_edge_player(x, y)
+				if player != -1:
+					var edge = Vector2i(x, y)
+					$EdgeTileMap.change_tile(1 + player, edge, EDGE_TILE_COLOR + is_edge_alt(edge))
+			else:
+				var upper = $UnknoterNode.get_upper_vertex_player(x, y)
+				if upper != -1:
+					$VertexTileMap.change_tile(upper, Vector2i(x, y), VERTEX_TILE_COLOR)
 
 func is_edge_alt(edge: Vector2i) -> int:
 	return edge[0] & 1
@@ -43,18 +82,33 @@ var current_perpindicular_offset
 var current_hovered_edge
 var is_hovered_edge_alt
 
-var HOVERED_EDGE_SOURCE_ID = 2
-var SELECTED_EDGE_SOURCE_ID = 4
-var FUTURE_EDGE_SOURCE_ID = 6
+var changed_edge_tiles = []
 
-func _draw_selected_edges(source_id):
-	$EdgeTileMap.clear_all_selected_edges()
+func _clear_edge_tiles():
+	for tile in changed_edge_tiles:
+		var edge = tile[0]
+		var was_ours = tile[1]
+		if was_ours:
+			$EdgeTileMap.change_tile(1 + current_player, edge, EDGE_TILE_COLOR + is_edge_alt(edge))
+		else:
+			$EdgeTileMap.change_tile(1 + current_player, edge, -1)
+	changed_edge_tiles = []
+
+func _change_edge_tile(edge: Vector2i, source_id: int):
+	$EdgeTileMap.change_tile(1 + current_player, edge, source_id)
+	var was_ours = $UnknoterNode.get_edge_player(edge[0], edge[1]) == current_player
+	changed_edge_tiles.push_back([edge, was_ours])
+
+func _draw_selected_edges():
+	_clear_edge_tiles()
 	var other_selected_edge = current_selected_edge
 	if is_selected_edge_alt:
 		other_selected_edge[1] += 2 * current_perpindicular_offset
 	else:
 		other_selected_edge[0] += 2 * current_perpindicular_offset
-	$EdgeTileMap.draw_selected_edge(other_selected_edge, source_id)
+	var source_id = EDGE_TILE_HOVERED if current_state == STATE.SELECTING_EDGES else EDGE_TILE_SELECTED
+	source_id += is_selected_edge_alt
+	_change_edge_tile(other_selected_edge, source_id)
 	if current_selected_offset != 0:
 		var signn = sign(current_selected_offset)
 		for i in range(signn, current_selected_offset + signn, signn):
@@ -65,8 +119,18 @@ func _draw_selected_edges(source_id):
 			else:
 				other_selected_edge[0] += 2 * current_perpindicular_offset
 				other_selected_edge[1] += 2 * i
-			$EdgeTileMap.draw_selected_edge(other_selected_edge, source_id)
+			_change_edge_tile(other_selected_edge, source_id)
 	if current_perpindicular_offset != 0:
+		_change_edge_tile(current_selected_edge, -1)
+		if current_selected_offset != 0:
+			var signn = sign(current_selected_offset)
+			for i in range(signn, current_selected_offset + signn, signn):
+				other_selected_edge = current_selected_edge
+				if is_selected_edge_alt:
+					other_selected_edge[0] += 2 * i
+				else:
+					other_selected_edge[1] += 2 * i
+				_change_edge_tile(other_selected_edge, -1)
 		var begin_vertex = current_selected_edge
 		begin_vertex[0] = begin_vertex[0] / 2 * 2
 		begin_vertex[1] = begin_vertex[1] / 2 * 2
@@ -78,15 +142,13 @@ func _draw_selected_edges(source_id):
 		if current_selected_offset > 0:
 			end_vertex[1 - is_selected_edge_alt] += 2 * current_selected_offset
 		var signn = sign(current_perpindicular_offset)
-		#begin_vertex[is_selected_edge_alt] += signn
-		#end_vertex[is_selected_edge_alt] += signn
 		for i in range(0, current_perpindicular_offset, signn):
 			if is_selected_edge_alt:
-				$EdgeTileMap.draw_selected_edge(begin_vertex + Vector2i(0, 2 * i + signn), FUTURE_EDGE_SOURCE_ID + 1 - is_selected_edge_alt)
-				$EdgeTileMap.draw_selected_edge(end_vertex + Vector2i(0, 2 * i + signn), FUTURE_EDGE_SOURCE_ID + 1 - is_selected_edge_alt)
+				_change_edge_tile(begin_vertex + Vector2i(0, 2 * i + signn), FUTURE_EDGE_SOURCE_ID + 1 - is_selected_edge_alt)
+				_change_edge_tile(end_vertex + Vector2i(0, 2 * i + signn), FUTURE_EDGE_SOURCE_ID + 1 - is_selected_edge_alt)
 			else:
-				$EdgeTileMap.draw_selected_edge(begin_vertex + Vector2i(2 * i + signn, 0), FUTURE_EDGE_SOURCE_ID + 1 - is_selected_edge_alt)
-				$EdgeTileMap.draw_selected_edge(end_vertex + Vector2i(2 * i + signn, 0), FUTURE_EDGE_SOURCE_ID + 1 - is_selected_edge_alt)
+				_change_edge_tile(begin_vertex + Vector2i(2 * i + signn, 0), FUTURE_EDGE_SOURCE_ID + 1 - is_selected_edge_alt)
+				_change_edge_tile(end_vertex + Vector2i(2 * i + signn, 0), FUTURE_EDGE_SOURCE_ID + 1 - is_selected_edge_alt)
 
 # TODO: works weirdly when hovering out of bounds, maybe fix, pretty pls?
 func _on_edge_hovered(edge: Vector2i) -> void:
@@ -95,13 +157,25 @@ func _on_edge_hovered(edge: Vector2i) -> void:
 	if current_state >= STATE.SELECT_VERTEX:
 		return
 	if current_state == STATE.START_SELECTING_EDGES:
-		$EdgeTileMap.draw_selected_edge(edge, HOVERED_EDGE_SOURCE_ID + is_hovered_edge_alt)
+		_clear_edge_tiles()
+		if $UnknoterNode.get_edge_player(edge[0], edge[1]) != current_player:
+			return
+		_change_edge_tile(edge, EDGE_TILE_HOVERED + is_hovered_edge_alt)
 	if current_state == STATE.SELECTING_EDGES:
+		var next_selected_offset
 		if is_selected_edge_alt:
-			current_selected_offset = (edge[0] - current_selected_edge[0]) / 2
+			next_selected_offset = (edge[0] - current_selected_edge[0]) / 2
 		else:
-			current_selected_offset = (edge[1] - current_selected_edge[1]) / 2
-		_draw_selected_edges(HOVERED_EDGE_SOURCE_ID + is_selected_edge_alt)
+			next_selected_offset = (edge[1] - current_selected_edge[1]) / 2
+		if not $UnknoterNode.can_player_shift_edges(
+				current_player,
+				current_selected_edge[0],
+				current_selected_edge[1],
+				next_selected_offset,
+				0):
+			return
+		current_selected_offset = next_selected_offset
+		_draw_selected_edges()
 
 	if current_state == STATE.MOVING_EDGES:
 		var new_perpendicular_offset
@@ -109,68 +183,87 @@ func _on_edge_hovered(edge: Vector2i) -> void:
 			new_perpendicular_offset = (edge[0] - current_selected_edge[0]) / 2
 		else:
 			new_perpendicular_offset = (edge[1] - current_selected_edge[1]) / 2
-		# TODO: if new_perpendicular_offset not valid move:
-		#	return
+		if new_perpendicular_offset == 0:
+			return
+		if not $UnknoterNode.can_player_shift_edges(
+				current_player,
+				current_selected_edge[0],
+				current_selected_edge[1],
+				current_selected_offset,
+				new_perpendicular_offset):
+			return
 		current_perpindicular_offset = new_perpendicular_offset
-		_draw_selected_edges(SELECTED_EDGE_SOURCE_ID + is_selected_edge_alt)
+		_draw_selected_edges()
 	if current_state == STATE.CONFIRM_EDGES_MOVE:
 		pass
 
 func _on_edge_unhovered() -> void:
 	if current_state == STATE.START_SELECTING_EDGES:
-		$EdgeTileMap.clear_all_selected_edges()
+		_clear_edge_tiles()
 
 func _on_edge_pressed(edge) -> void:
 	if current_state == STATE.START_SELECTING_EDGES:
-		#TODO: check with backend that it's our edge
+		if $UnknoterNode.get_edge_player(edge[0], edge[1]) != current_player:
+			return
 		current_state = STATE.SELECTING_EDGES
 		current_selected_edge = edge
+		is_selected_edge_alt = is_edge_alt(current_selected_edge)
 		current_selected_offset = 0
 		current_perpindicular_offset = 0
-		is_selected_edge_alt = is_edge_alt(edge)
-		$EdgeTileMap.draw_selected_edge(edge, HOVERED_EDGE_SOURCE_ID + is_selected_edge_alt)
+		_change_edge_tile(edge, EDGE_TILE_HOVERED + is_selected_edge_alt)
 	if current_state == STATE.MOVING_EDGES:
+		if current_perpindicular_offset == 0:
+			return
 		current_state = STATE.CONFIRM_EDGES_MOVE
 		#TODO: spawn confirm UI
 
 func _on_edge_unpressed(edge) -> void:
 	if current_state == STATE.SELECTING_EDGES:
 		current_state = STATE.MOVING_EDGES
-		_draw_selected_edges(SELECTED_EDGE_SOURCE_ID + is_selected_edge_alt)
+		_draw_selected_edges()
+
+var changed_vertex_tiles = []
+
+func _clear_vertex_tiles():
+	for tile in changed_vertex_tiles:
+		var vertex = tile[0]
+		var player = tile[1]
+		$VertexTileMap.change_tile(player, vertex, VERTEX_TILE_COLOR)
+	changed_vertex_tiles = []
+
+func _change_vertex_tile(vertex: Vector2i, source_id: int):
+	var upper = $UnknoterNode.get_upper_vertex_player(vertex[0], vertex[1])
+	$VertexTileMap.change_tile(upper, vertex, source_id)
+	changed_vertex_tiles.push_back([vertex, upper])
 
 var current_selected_vertex
-var current_hovered_vertex
 
-var HOVERED_VERTEX_SOURCE_ID = 1
-var SELECTED_VERTEX_SOURCE_ID = 2
+func _can_flip_vertex(vertex: Vector2i) -> bool:
+	return $UnknoterNode.can_player_flip_vertex(current_player, vertex[0], vertex[1])
 
 func _on_vertex_hovered(vertex: Vector2i) -> void:
-	current_hovered_vertex = vertex
-	# TODO: check with backend that we can change this vertex
+	if not _can_flip_vertex(vertex):
+		return
 	if current_state == STATE.SELECT_VERTEX:
-		$VertexTileMap.draw_selected_vertex(vertex, HOVERED_VERTEX_SOURCE_ID)
+		_change_vertex_tile(vertex, VERTEX_TILE_HOVERED)
 	if current_state == STATE.CONFIRM_VERTEX:
-		if current_hovered_vertex != current_selected_vertex:
-			$VertexTileMap.draw_selected_vertex(vertex, HOVERED_VERTEX_SOURCE_ID)
+		if vertex == current_selected_vertex:
+			return
+		_change_vertex_tile(vertex, VERTEX_TILE_HOVERED)
 
-func _on_vertex_unhovered() -> void:
+func _on_vertex_unhovered(vertex: Vector2i) -> void:
 	if current_state == STATE.SELECT_VERTEX:
-		$VertexTileMap.clear_all_selected_vertices()
+		_clear_vertex_tiles()
 	if current_state == STATE.CONFIRM_VERTEX:
-		if current_hovered_vertex != current_selected_vertex:
-			$VertexTileMap.clear_selected_vertex(current_hovered_vertex)
+		_clear_vertex_tiles()
+		_change_vertex_tile(current_selected_vertex, VERTEX_TILE_SELECTED)
 
 func _on_vertex_pressed(vertex) -> void:
-	# TODO: check with backend that we can change this vertex
-	if current_state == STATE.SELECT_VERTEX:
+	if not _can_flip_vertex(vertex):
+		return
+	if current_state == STATE.SELECT_VERTEX or current_state == STATE.CONFIRM_VERTEX:
 		current_state = STATE.CONFIRM_VERTEX
 		current_selected_vertex = vertex
 		#TODO: create confirm UI
-		$VertexTileMap.draw_selected_vertex(vertex, SELECTED_VERTEX_SOURCE_ID)
-
-	if current_state == STATE.CONFIRM_VERTEX:
-		$VertexTileMap.clear_selected_vertex(current_selected_vertex)
-		current_selected_vertex = vertex
-		$VertexTileMap.draw_selected_vertex(vertex, SELECTED_VERTEX_SOURCE_ID)
-
-#TODO: add vertex confirm, send move to bavckend
+		_clear_vertex_tiles()
+		_change_vertex_tile(vertex, VERTEX_TILE_SELECTED)

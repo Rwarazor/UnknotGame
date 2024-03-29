@@ -1,20 +1,23 @@
-[gd_scene load_steps=34 format=3 uid="uid://cbdggtmlpwk7n"]
+[gd_scene load_steps=40 format=3 uid="uid://cbdggtmlpwk7n"]
 
 [ext_resource type="Script" path="res://Scripts/game.gd" id="1_7wbfd"]
 [ext_resource type="Script" path="res://Scripts/zoom.gd" id="2_4a8fq"]
-[ext_resource type="Texture2D" uid="uid://bqyq78b55hdwp" path="res://assets/edgeTile.png" id="2_i73xq"]
-[ext_resource type="Texture2D" uid="uid://ccq2xnd4mh8i2" path="res://assets/edgeTileAlt.png" id="3_wfksh"]
+[ext_resource type="Texture2D" uid="uid://bqyq78b55hdwp" path="res://assets/tiles/edgeTileBackground.png" id="2_i73xq"]
+[ext_resource type="Texture2D" uid="uid://18h4l4w1kyks" path="res://assets/tiles/tileBackground.png" id="3_1fxtn"]
+[ext_resource type="Texture2D" uid="uid://ccq2xnd4mh8i2" path="res://assets/tiles/edgeTileBackgroundAlt.png" id="3_wfksh"]
 [ext_resource type="Script" path="res://Scripts/edgesTileMap.gd" id="4_y7ov5"]
-[ext_resource type="Texture2D" uid="uid://cs148lp16tu6x" path="res://assets/edgeTileAltSelected.png" id="5_2julx"]
-[ext_resource type="Texture2D" uid="uid://cvwg0qwx6q6qf" path="res://assets/edgeTileHovered.png" id="5_tv0kh"]
-[ext_resource type="Texture2D" uid="uid://cyoej7h2ywkes" path="res://assets/edgeTileAltHovered.png" id="6_bxwoi"]
-[ext_resource type="Texture2D" uid="uid://hesyw407j12g" path="res://assets/edgeTileSelected.png" id="7_kq5mi"]
-[ext_resource type="Texture2D" uid="uid://bwtj6b5bc6fx3" path="res://assets/dotTile.png" id="7_orf88"]
-[ext_resource type="Texture2D" uid="uid://dpq083wqjdqpi" path="res://assets/dotTileSelected.png" id="8_47n8j"]
-[ext_resource type="Texture2D" uid="uid://dgbpjl0xpt5nn" path="res://assets/edgeTileFuture.png" id="9_k3tl7"]
+[ext_resource type="Texture2D" uid="uid://cs148lp16tu6x" path="res://assets/tiles/edgeTileSelectedAlt.png" id="5_2julx"]
+[ext_resource type="Texture2D" uid="uid://cvwg0qwx6q6qf" path="res://assets/tiles/edgeTileHovered.png" id="5_tv0kh"]
+[ext_resource type="Texture2D" uid="uid://cyoej7h2ywkes" path="res://assets/tiles/edgeTileHoveredAlt.png" id="6_bxwoi"]
+[ext_resource type="Texture2D" uid="uid://hesyw407j12g" path="res://assets/tiles/edgeTileSelected.png" id="7_kq5mi"]
+[ext_resource type="Texture2D" uid="uid://bwtj6b5bc6fx3" path="res://assets/tiles/dotTileColor.png" id="7_orf88"]
+[ext_resource type="Texture2D" uid="uid://dpq083wqjdqpi" path="res://assets/tiles/dotTileSelected.png" id="8_47n8j"]
+[ext_resource type="Texture2D" uid="uid://dgbpjl0xpt5nn" path="res://assets/tiles/edgeTileFuture.png" id="9_k3tl7"]
 [ext_resource type="Script" path="res://Scripts/vertexTileMap.gd" id="9_l4svq"]
-[ext_resource type="Texture2D" uid="uid://bg5bnuywekwv6" path="res://assets/dotTileHovered.png" id="9_teopa"]
-[ext_resource type="Texture2D" uid="uid://bpwcee1033k8j" path="res://assets/edgeTileAltFuture.png" id="10_v2h7l"]
+[ext_resource type="Texture2D" uid="uid://bg5bnuywekwv6" path="res://assets/tiles/dotTileHovered.png" id="9_teopa"]
+[ext_resource type="Texture2D" uid="uid://bpwcee1033k8j" path="res://assets/tiles/edgeTileFutureAlt.png" id="10_v2h7l"]
+[ext_resource type="Texture2D" uid="uid://cjvdiee0psnw1" path="res://assets/tiles/edgeTileColor.png" id="11_pmc3y"]
+[ext_resource type="Texture2D" uid="uid://tn4qo46xgkfq" path="res://assets/tiles/edgeTileColorAlt.png" id="12_0jeec"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_acbo1"]
 
@@ -32,13 +35,33 @@ Button/styles/hover = SubResource("StyleBoxEmpty_ct1wx")
 Button/styles/normal = SubResource("StyleBoxEmpty_s11b3")
 Button/styles/pressed = SubResource("StyleBoxEmpty_bfpio")
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ki6yq"]
+texture = ExtResource("3_1fxtn")
+texture_region_size = Vector2i(48, 48)
+0:0/0 = 0
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_axps3"]
 texture = ExtResource("2_i73xq")
 texture_region_size = Vector2i(48, 48)
 0:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vwofr"]
+texture = ExtResource("10_v2h7l")
+texture_region_size = Vector2i(48, 48)
+0:0/0 = 0
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iwo18"]
 texture = ExtResource("3_wfksh")
+texture_region_size = Vector2i(48, 48)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_830rr"]
+texture = ExtResource("11_pmc3y")
+texture_region_size = Vector2i(48, 48)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cdnow"]
+texture = ExtResource("12_0jeec")
 texture_region_size = Vector2i(48, 48)
 0:0/0 = 0
 
@@ -67,21 +90,19 @@ texture = ExtResource("9_k3tl7")
 texture_region_size = Vector2i(48, 48)
 0:0/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vwofr"]
-texture = ExtResource("10_v2h7l")
-texture_region_size = Vector2i(48, 48)
-0:0/0 = 0
-
 [sub_resource type="TileSet" id="TileSet_h1xgk"]
 tile_size = Vector2i(48, 48)
-sources/0 = SubResource("TileSetAtlasSource_axps3")
-sources/1 = SubResource("TileSetAtlasSource_iwo18")
-sources/2 = SubResource("TileSetAtlasSource_r77kr")
-sources/3 = SubResource("TileSetAtlasSource_i8yvx")
-sources/5 = SubResource("TileSetAtlasSource_knop5")
-sources/4 = SubResource("TileSetAtlasSource_m65ch")
-sources/6 = SubResource("TileSetAtlasSource_kfulk")
-sources/7 = SubResource("TileSetAtlasSource_vwofr")
+sources/2 = SubResource("TileSetAtlasSource_iwo18")
+sources/1 = SubResource("TileSetAtlasSource_axps3")
+sources/0 = SubResource("TileSetAtlasSource_ki6yq")
+sources/3 = SubResource("TileSetAtlasSource_830rr")
+sources/4 = SubResource("TileSetAtlasSource_cdnow")
+sources/5 = SubResource("TileSetAtlasSource_r77kr")
+sources/6 = SubResource("TileSetAtlasSource_i8yvx")
+sources/7 = SubResource("TileSetAtlasSource_m65ch")
+sources/8 = SubResource("TileSetAtlasSource_knop5")
+sources/10 = SubResource("TileSetAtlasSource_vwofr")
+sources/9 = SubResource("TileSetAtlasSource_kfulk")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mwftc"]
 texture = ExtResource("7_orf88")
@@ -154,7 +175,7 @@ text = "Вернуться на
 главный экран"
 
 [node name="EdgeTileMap" type="TileMap" parent="."]
-position = Vector2(679, -679)
+position = Vector2(679, -1400)
 rotation = 0.785398
 tile_set = SubResource("TileSet_h1xgk")
 format = 2
@@ -163,12 +184,10 @@ layer_1/tile_data = PackedInt32Array()
 script = ExtResource("4_y7ov5")
 
 [node name="VertexTileMap" type="TileMap" parent="."]
-position = Vector2(679, -713)
+position = Vector2(679, -1434)
 rotation = 0.785398
 tile_set = SubResource("TileSet_ftpqk")
 format = 2
-layer_1/name = "Layer1"
-layer_1/tile_data = PackedInt32Array()
 script = ExtResource("9_l4svq")
 
 [connection signal="pressed" from="UI/MarginContainer/VBoxContainer/HBoxContainer/Button" to="." method="_on_switch_turn_mode_button_pressed"]
