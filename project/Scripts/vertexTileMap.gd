@@ -35,6 +35,11 @@ func reset(width: int, height: int) -> void:
 	widthTiles = width
 	heightTiles = height
 
+func get_field_bounds() -> Vector4:
+	var upper_left = to_global(map_to_local(vertex_to_tilemap_coords(Vector2i(0, 0))))
+	var lower_right = to_global(map_to_local(vertex_to_tilemap_coords(Vector2i(2 * widthTiles, 2 * heightTiles))))
+	return Vector4(upper_left[0], upper_left[1], lower_right[0], lower_right[1])
+
 func change_tile(layer, coords: Vector2i, source_id: int) -> void:
 	var tile = vertex_to_tilemap_coords(coords)
 	set_cell(layer, tile, source_id, Vector2i(0, 0), 0)
