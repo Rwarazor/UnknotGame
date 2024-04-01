@@ -1,7 +1,7 @@
 extends Node2D
 
-@export var WIDTH_TILES = 20
-@export var HEIGHT_TILES = 15
+@export var WIDTH_TILES: int
+@export var HEIGHT_TILES: int
 
 @export var ZOOM_BORDERS_INFLATE_X = 500
 @export var ZOOM_BORDERS_INFLATE_Y = 500
@@ -64,7 +64,8 @@ func _ready() -> void:
 	)
 	$Zoom.set_bounds(field_bounds + inflate)
 
-	$UnknoterNode.reset(Global.players, WIDTH_TILES, HEIGHT_TILES)
+	# TODO: fix later
+	$UnknoterNode.reset(Global.players, 30, 30)
 
 	for player in range(Global.players):
 		var color = Color()
