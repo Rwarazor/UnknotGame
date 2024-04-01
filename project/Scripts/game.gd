@@ -32,22 +32,26 @@ var VERTEX_TILE_COLOR = 0
 var VERTEX_TILE_HOVERED = 1
 var VERTEX_TILE_SELECTED = 2
 
-func _on_back_to_menu_button_pressed():
-	get_tree().change_scene_to_file("res://Scenes/menu.tscn")
-
-func _on_switch_turn_mode_button_pressed() -> void:
-	if current_state == STATE.DRAG:
-		current_state = STATE.START_SELECTING_EDGES
-		$UI/MarginContainer/VBoxContainer/HBoxContainer/Label.text = "Режим: ребро"
-	elif current_state < STATE.SELECT_VERTEX:
-		current_state = STATE.SELECT_VERTEX
-		$UI/MarginContainer/VBoxContainer/HBoxContainer/Label.text = "Режим: вершина"
-	else:
-		current_state = STATE.DRAG
-		$UI/MarginContainer/VBoxContainer/HBoxContainer/Label.text = "Режим: рука"
+func _refresh_state():
 	_clear_edge_tiles()
 	_clear_vertex_tiles()
 	$Zoom.allow_dragging = (current_state == STATE.DRAG)
+	
+func _on_back_to_menu_button_pressed():
+	get_tree().change_scene_to_file("res://Scenes/menu.tscn")
+	
+func _on_edge_button_pressed():
+	current_state = STATE.START_SELECTING_EDGES
+	_refresh_state()
+	
+func _on_vertex_button_pressed():
+	current_state = STATE.SELECT_VERTEX
+	_refresh_state()
+	
+func _on_move_button_pressed():
+	current_state = STATE.DRAG
+	_refresh_state()
+	
 
 var player_colors = []
 
@@ -288,3 +292,8 @@ func _on_vertex_pressed(vertex) -> void:
 		#TODO: create confirm UI
 		_clear_vertex_tiles()
 		_change_vertex_tile(vertex, VERTEX_TILE_SELECTED)
+
+
+
+
+
