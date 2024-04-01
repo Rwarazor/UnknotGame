@@ -1,8 +1,14 @@
 extends Node2D
 
-@export var WIDTH_TILES = 20
-@export var HEIGHT_TILES = 15
+@export var WIDTH_TILES: int
+@export var HEIGHT_TILES: int
+
+@export var ZOOM_BORDERS_INFLATE_X = 500
+@export var ZOOM_BORDERS_INFLATE_Y = 500
+
 enum STATE {
+	DRAG = -1,
+
 	START_SELECTING_EDGES = 0,
 	SELECTING_EDGES = 1,
 	MOVING_EDGES = 2,
@@ -30,21 +36,36 @@ func _on_back_to_menu_button_pressed():
 	get_tree().change_scene_to_file("res://Scenes/menu.tscn")
 
 func _on_switch_turn_mode_button_pressed() -> void:
-	if current_state < STATE.SELECT_VERTEX:
+	if current_state == STATE.DRAG:
+		current_state = STATE.START_SELECTING_EDGES
+		$UI/MarginContainer/VBoxContainer/HBoxContainer/Label.text = "Режим: ребро"
+	elif current_state < STATE.SELECT_VERTEX:
 		current_state = STATE.SELECT_VERTEX
 		$UI/MarginContainer/VBoxContainer/HBoxContainer/Label.text = "Режим: вершина"
 	else:
-		current_state = STATE.START_SELECTING_EDGES
-		$UI/MarginContainer/VBoxContainer/HBoxContainer/Label.text = "Режим: ребро"
+		current_state = STATE.DRAG
+		$UI/MarginContainer/VBoxContainer/HBoxContainer/Label.text = "Режим: рука"
 	_clear_edge_tiles()
 	_clear_vertex_tiles()
+	$Zoom.allow_dragging = (current_state == STATE.DRAG)
 
 var player_colors = []
 
 func _ready() -> void:
 	$VertexTileMap.reset(WIDTH_TILES, HEIGHT_TILES)
 	$EdgeTileMap.reset(WIDTH_TILES, HEIGHT_TILES)
-	$UnknoterNode.reset(Global.players, WIDTH_TILES, HEIGHT_TILES)
+
+	var field_bounds = $VertexTileMap.get_field_bounds()
+	var inflate = Vector4(
+		-ZOOM_BORDERS_INFLATE_X,
+		-ZOOM_BORDERS_INFLATE_Y,
+		ZOOM_BORDERS_INFLATE_X,
+		ZOOM_BORDERS_INFLATE_Y
+	)
+	$Zoom.set_bounds(field_bounds + inflate)
+
+	# TODO: fix later
+	$UnknoterNode.reset(Global.players, 30, 30)
 
 	for player in range(Global.players):
 		var color = Color()
