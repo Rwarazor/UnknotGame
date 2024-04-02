@@ -6,6 +6,8 @@ extends Node2D
 @export var ZOOM_BORDERS_INFLATE_X = 500
 @export var ZOOM_BORDERS_INFLATE_Y = 500
 
+@onready var button_click_sound = $UI/ButtonClickSound
+
 enum STATE {
 	DRAG = -1,
 
@@ -38,18 +40,23 @@ func _refresh_state():
 	$Zoom.allow_dragging = (current_state == STATE.DRAG)
 	
 func _on_back_to_menu_button_pressed():
+	button_click_sound.play()
+	await get_tree().create_timer(0.15).timeout
 	get_tree().change_scene_to_file("res://Scenes/menu.tscn")
 	
 func _on_edge_button_pressed():
+	button_click_sound.play()
 	current_state = STATE.START_SELECTING_EDGES
 	_refresh_state()
 	
 func _on_vertex_button_pressed():
+	button_click_sound.play()
 	current_state = STATE.SELECT_VERTEX
 	_refresh_state()
 	
 func _on_move_button_pressed():
 	current_state = STATE.DRAG
+	button_click_sound.play()
 	_refresh_state()
 	
 

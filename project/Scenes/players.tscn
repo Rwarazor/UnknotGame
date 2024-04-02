@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cx0w5rjjyhxv5"]
+[gd_scene load_steps=5 format=3 uid="uid://cx0w5rjjyhxv5"]
 
 [ext_resource type="Script" path="res://Scripts/Players.gd" id="1_xw1e8"]
 [ext_resource type="Texture2D" uid="uid://bi6n5s8ckt04" path="res://assets/tiles/playersBackground.png" id="2_5bds1"]
+[ext_resource type="AudioStream" uid="uid://dmo7384pg4kh6" path="res://assets/playersClick.wav" id="3_tc5ug"]
 
 [sub_resource type="SystemFont" id="SystemFont_jmt8p"]
 
@@ -88,6 +89,11 @@ custom_minimum_size = Vector2(300, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 text = "4"
+
+[node name="ChoosePlayersSound" type="AudioStreamPlayer" parent="MarginContainer"]
+stream = ExtResource("3_tc5ug")
+volume_db = -2.0
+bus = &"SFX"
 
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/OnePlayer" to="." method="_on_one_player_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/ThreePlayers" to="." method="_on_three_players_pressed"]

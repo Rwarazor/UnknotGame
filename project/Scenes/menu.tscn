@@ -1,7 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://dobojdk2a4kdt"]
+[gd_scene load_steps=11 format=3 uid="uid://dobojdk2a4kdt"]
 
 [ext_resource type="Script" path="res://Scripts/Menu.gd" id="1_lgw47"]
 [ext_resource type="Texture2D" uid="uid://dy2tl37wg52lk" path="res://assets/tiles/menuBackground.png" id="2_xg3t2"]
+[ext_resource type="AudioStream" uid="uid://dss410n04r5m5" path="res://assets/simpleClick.wav" id="3_ow68s"]
+[ext_resource type="AudioStream" uid="uid://dvj2f5yy6m0an" path="res://assets/music.mp3" id="3_srj06"]
+
+[sub_resource type="Theme" id="Theme_5gk2t"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fu8as"]
 
@@ -64,6 +68,11 @@ size_flags_vertical = 4
 theme_override_constants/separation = 50
 alignment = 1
 
+[node name="ButtonClickSound" type="AudioStreamPlayer" parent="MarginContainer/VBoxContainer"]
+stream = ExtResource("3_ow68s")
+volume_db = -7.0
+bus = &"SFX"
+
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 60
@@ -88,8 +97,14 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "Обучение"
 
-[node name="Separator2" type="Control" parent="MarginContainer/VBoxContainer"]
+[node name="SettingsButton" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(276, 50)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = SubResource("Theme_5gk2t")
+theme_override_font_sizes/font_size = 30
+text = "Настройки"
 
 [node name="ExitButton" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -97,7 +112,14 @@ theme = SubResource("Theme_6vv4v")
 theme_override_font_sizes/font_size = 20
 text = "Выход"
 
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_srj06")
+volume_db = -15.0
+autoplay = true
+bus = &"Music"
+
 [connection signal="pressed" from="MarginContainer/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ContinueGameButton" to="." method="_on_continue_game_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/TutorialButton" to="." method="_on_tutorial_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
