@@ -1,8 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://kiyynqoroydt"]
+[gd_scene load_steps=6 format=3 uid="uid://kiyynqoroydt"]
 
 [ext_resource type="Script" path="res://Scenes/settings.gd" id="1_0ujdt"]
 [ext_resource type="Texture2D" uid="uid://dy2tl37wg52lk" path="res://assets/tiles/menuBackground.png" id="1_oarw7"]
 [ext_resource type="AudioStream" uid="uid://dss410n04r5m5" path="res://assets/simpleClick.wav" id="3_eljc5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7dmsg"]
+bg_color = Color(0.541966, 0.784297, 1.15514e-06, 0.768627)
+
+[sub_resource type="Theme" id="Theme_0bt0f"]
+Button/styles/normal = SubResource("StyleBoxFlat_7dmsg")
 
 [node name="Settings" type="Control"]
 layout_mode = 3
@@ -30,17 +36,89 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -22.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Separator" type="Control" parent="MarginContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/h_separation = 10
+columns = 2
+
+[node name="MusicLabel" type="Label" parent="MarginContainer/VBoxContainer2/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Музыка"
+
+[node name="MusicSlider" type="HSlider" parent="MarginContainer/VBoxContainer2/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="sfxLabel" type="Label" parent="MarginContainer/VBoxContainer2/GridContainer"]
+auto_translate_mode = 1
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Звуки"
+
+[node name="sfxSlider" type="HSlider" parent="MarginContainer/VBoxContainer2/GridContainer"]
+auto_translate_mode = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "
+О нас"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Привет! Мы - студенты ВШЭ, и эта игра - наш курсовой проект. Мы много
+ старались и надеемся, что смогли сделать ее максимально
+ увлекательной, полезной и удобной. Если вы хотите ознакомиться с
+исходным кодом Unknot, нажмите на кнопку ниже, чтобы попасть в наш
+ репозиторий:
+
+"
+
+[node name="RepoButton" type="Button" parent="MarginContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(145, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = SubResource("Theme_0bt0f")
+theme_override_font_sizes/font_size = 30
+text = "GitHub"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 8
 
 [node name="Button" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
+theme_override_font_sizes/font_size = 20
 text = "Назад к меню"
 
 [node name="ButtonClickSound" type="AudioStreamPlayer" parent="MarginContainer"]
@@ -48,4 +126,7 @@ stream = ExtResource("3_eljc5")
 volume_db = -7.0
 bus = &"SFX"
 
+[connection signal="value_changed" from="MarginContainer/VBoxContainer2/GridContainer/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="MarginContainer/VBoxContainer2/GridContainer/sfxSlider" to="." method="_on_sfx_slider_value_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer2/RepoButton" to="." method="_on_repo_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]
