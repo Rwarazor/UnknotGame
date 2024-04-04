@@ -19,7 +19,7 @@ enum STATE {
 	SELECT_VERTEX = 10,
 	CONFIRM_VERTEX = 11
 }
-var current_state = STATE.START_SELECTING_EDGES
+var current_state = STATE.DRAG
 
 var current_player = 0
 
@@ -59,13 +59,13 @@ func _on_move_button_pressed():
 	button_click_sound.play()
 	_refresh_state()
 	
-
 var player_colors = []
+var game_colors = [Color(0,1,1,1), Color(1,0,1,1), Color(1,1,0,1), Color(0.486275, 0.988235, 0, 1)]
 
 func _ready() -> void:
 	$VertexTileMap.reset(WIDTH_TILES, HEIGHT_TILES)
 	$EdgeTileMap.reset(WIDTH_TILES, HEIGHT_TILES)
-
+	_on_move_button_pressed()
 	var field_bounds = $VertexTileMap.get_field_bounds()
 	var inflate = Vector4(
 		-ZOOM_BORDERS_INFLATE_X,
@@ -79,10 +79,9 @@ func _ready() -> void:
 	$UnknoterNode.reset(Global.players, 30, 30)
 
 	for player in range(Global.players):
-		var color = Color()
-		color.r = randf_range(0, 1)
-		color.g = randf_range(0, 1)
-		color.b = randf_range(0, 1)
+		var color = game_colors[randf_range(0, 4)]
+		while player_colors.has(color):
+			color = game_colors[randf_range(0, 4)]
 		player_colors.push_back(color)
 		$EdgeTileMap.add_layer(1 + player)
 		$EdgeTileMap.set_layer_modulate(1 + player, color)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://cbdggtmlpwk7n"]
+[gd_scene load_steps=54 format=3 uid="uid://cbdggtmlpwk7n"]
 
 [ext_resource type="Script" path="res://Scripts/game.gd" id="1_7wbfd"]
 [ext_resource type="Script" path="res://Scripts/zoom.gd" id="2_4a8fq"]
@@ -6,9 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://bk155nwdel3xh" path="res://assets/tiles/gameBackground.png" id="3_1dlq8"]
 [ext_resource type="Texture2D" uid="uid://18h4l4w1kyks" path="res://assets/tiles/tileBackground.png" id="3_1fxtn"]
 [ext_resource type="AudioStream" uid="uid://dss410n04r5m5" path="res://assets/simpleClick.wav" id="3_45d03"]
+[ext_resource type="Texture2D" uid="uid://byjgr6mkklsi7" path="res://assets/tiles/edgeIcon.png" id="3_oj1se"]
 [ext_resource type="Texture2D" uid="uid://ccq2xnd4mh8i2" path="res://assets/tiles/edgeTileBackgroundAlt.png" id="3_wfksh"]
+[ext_resource type="Texture2D" uid="uid://cpfflbcp3n1a4" path="res://assets/tiles/vertexIcon.png" id="4_stjam"]
 [ext_resource type="Script" path="res://Scripts/edgesTileMap.gd" id="4_y7ov5"]
 [ext_resource type="Texture2D" uid="uid://cs148lp16tu6x" path="res://assets/tiles/edgeTileSelectedAlt.png" id="5_2julx"]
+[ext_resource type="Texture2D" uid="uid://b82jnhfauk5o4" path="res://assets/tiles/handIcon.png" id="5_iwcoh"]
 [ext_resource type="Texture2D" uid="uid://cvwg0qwx6q6qf" path="res://assets/tiles/edgeTileHovered.png" id="5_tv0kh"]
 [ext_resource type="Texture2D" uid="uid://cyoej7h2ywkes" path="res://assets/tiles/edgeTileHoveredAlt.png" id="6_bxwoi"]
 [ext_resource type="Texture2D" uid="uid://hesyw407j12g" path="res://assets/tiles/edgeTileSelected.png" id="7_kq5mi"]
@@ -21,36 +24,40 @@
 [ext_resource type="Texture2D" uid="uid://cjvdiee0psnw1" path="res://assets/tiles/edgeTileColor.png" id="11_pmc3y"]
 [ext_resource type="Texture2D" uid="uid://tn4qo46xgkfq" path="res://assets/tiles/edgeTileColorAlt.png" id="12_0jeec"]
 [ext_resource type="AudioStream" uid="uid://c3mtpg4ti4sgs" path="res://assets/gameMusic.mp3" id="20_8ngip"]
+[ext_resource type="PackedScene" uid="uid://cijaooi8ujuay" path="res://Scenes/paused_menu.tscn" id="25_71ny5"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1pxdb"]
-bg_color = Color(0.705882, 0.443137, 1, 0.901961)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e8jtd"]
+texture = ExtResource("3_oj1se")
+modulate_color = Color(1, 0.686275, 1, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pbe13"]
-bg_color = Color(0.654902, 0.478431, 1, 0.686275)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pae4c"]
+texture = ExtResource("3_oj1se")
 
-[sub_resource type="Theme" id="Theme_mbece"]
-Button/styles/focus = SubResource("StyleBoxFlat_1pxdb")
-Button/styles/hover = SubResource("StyleBoxFlat_pbe13")
+[sub_resource type="Theme" id="Theme_vomcj"]
+Button/styles/hover = SubResource("StyleBoxTexture_e8jtd")
+Button/styles/normal = SubResource("StyleBoxTexture_pae4c")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jmeyu"]
-bg_color = Color(0.313726, 0.745098, 0.219608, 0.854902)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_upvtb"]
+texture = ExtResource("4_stjam")
+modulate_color = Color(0.642023, 0.919051, 0.478985, 0.705882)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uoglr"]
-bg_color = Color(0.331044, 0.910394, 0.186062, 0.580392)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2irpw"]
+texture = ExtResource("4_stjam")
 
 [sub_resource type="Theme" id="Theme_0lt5d"]
-Button/styles/focus = SubResource("StyleBoxFlat_jmeyu")
-Button/styles/hover = SubResource("StyleBoxFlat_uoglr")
+Button/styles/hover = SubResource("StyleBoxTexture_upvtb")
+Button/styles/normal = SubResource("StyleBoxTexture_2irpw")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dtqml"]
-bg_color = Color(0.32549, 0.596078, 1, 0.894118)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vhjc6"]
+texture = ExtResource("5_iwcoh")
+modulate_color = Color(0.866322, 0.942713, 1, 0.898039)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_24vg0"]
-bg_color = Color(0.294118, 0.619608, 0.92549, 0.705882)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_u3wdu"]
+texture = ExtResource("5_iwcoh")
 
 [sub_resource type="Theme" id="Theme_7gur6"]
-Button/styles/focus = SubResource("StyleBoxFlat_dtqml")
-Button/styles/hover = SubResource("StyleBoxFlat_24vg0")
+Button/styles/hover = SubResource("StyleBoxTexture_vhjc6")
+Button/styles/normal = SubResource("StyleBoxTexture_u3wdu")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d2qaa"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -169,6 +176,7 @@ script = ExtResource("2_4a8fq")
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="MarginContainer" type="MarginContainer" parent="UI"]
+offset_left = 20.0
 offset_right = 1150.0
 offset_bottom = 644.0
 size_flags_vertical = 8
@@ -176,7 +184,7 @@ size_flags_vertical = 8
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer"]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 0
 size_flags_vertical = 8
 alignment = 1
 
@@ -185,34 +193,23 @@ layout_mode = 2
 alignment = 1
 
 [node name="edgeButton" type="Button" parent="UI/MarginContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(130, 45)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 0
-theme = SubResource("Theme_mbece")
+theme = SubResource("Theme_vomcj")
 theme_override_font_sizes/font_size = 25
-text = "Ребро"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer"]
-layout_mode = 2
-alignment = 1
-
-[node name="vertexButton" type="Button" parent="UI/MarginContainer/VBoxContainer/HBoxContainer2"]
-custom_minimum_size = Vector2(130, 45)
+[node name="vertexButton" type="Button" parent="UI/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme = SubResource("Theme_0lt5d")
 theme_override_font_sizes/font_size = 25
-text = "Вершина"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer"]
-layout_mode = 2
-alignment = 1
-
-[node name="moveButton" type="Button" parent="UI/MarginContainer/VBoxContainer/HBoxContainer3"]
-custom_minimum_size = Vector2(130, 45)
+[node name="moveButton" type="Button" parent="UI/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme = SubResource("Theme_7gur6")
 theme_override_font_sizes/font_size = 25
-text = "Двигать"
 
 [node name="BackToMenuButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(220, 50)
@@ -264,9 +261,13 @@ volume_db = -2.0
 autoplay = true
 bus = &"Music"
 
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PausedMenu" parent="CanvasLayer" instance=ExtResource("25_71ny5")]
+
 [connection signal="pressed" from="UI/MarginContainer/VBoxContainer/HBoxContainer/edgeButton" to="." method="_on_edge_button_pressed"]
-[connection signal="pressed" from="UI/MarginContainer/VBoxContainer/HBoxContainer2/vertexButton" to="." method="_on_vertex_button_pressed"]
-[connection signal="pressed" from="UI/MarginContainer/VBoxContainer/HBoxContainer3/moveButton" to="." method="_on_move_button_pressed"]
+[connection signal="pressed" from="UI/MarginContainer/VBoxContainer/HBoxContainer/vertexButton" to="." method="_on_vertex_button_pressed"]
+[connection signal="pressed" from="UI/MarginContainer/VBoxContainer/HBoxContainer/moveButton" to="." method="_on_move_button_pressed"]
 [connection signal="pressed" from="UI/MarginContainer/VBoxContainer/BackToMenuButton" to="." method="_on_back_to_menu_button_pressed"]
 [connection signal="edgeHovered" from="EdgeTileMap" to="." method="_on_edge_hovered"]
 [connection signal="edgePressed" from="EdgeTileMap" to="." method="_on_edge_pressed"]
