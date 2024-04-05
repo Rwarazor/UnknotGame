@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://b82jnhfauk5o4" path="res://assets/tiles/handIcon.png" id="5_iwcoh"]
 [ext_resource type="Texture2D" uid="uid://cvwg0qwx6q6qf" path="res://assets/tiles/edgeTileHovered.png" id="5_tv0kh"]
 [ext_resource type="Texture2D" uid="uid://cyoej7h2ywkes" path="res://assets/tiles/edgeTileHoveredAlt.png" id="6_bxwoi"]
+[ext_resource type="Texture2D" uid="uid://dla2vgbn0bgm0" path="res://assets/tiles/pause.png" id="6_jpoir"]
 [ext_resource type="Texture2D" uid="uid://hesyw407j12g" path="res://assets/tiles/edgeTileSelected.png" id="7_kq5mi"]
 [ext_resource type="Texture2D" uid="uid://bwtj6b5bc6fx3" path="res://assets/tiles/dotTileColor.png" id="7_orf88"]
 [ext_resource type="Texture2D" uid="uid://dpq083wqjdqpi" path="res://assets/tiles/dotTileSelected.png" id="8_47n8j"]
@@ -25,6 +26,12 @@
 [ext_resource type="Texture2D" uid="uid://tn4qo46xgkfq" path="res://assets/tiles/edgeTileColorAlt.png" id="12_0jeec"]
 [ext_resource type="AudioStream" uid="uid://c3mtpg4ti4sgs" path="res://assets/gameMusic.mp3" id="20_8ngip"]
 [ext_resource type="PackedScene" uid="uid://cijaooi8ujuay" path="res://Scenes/paused_menu.tscn" id="25_71ny5"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gbl77"]
+texture = ExtResource("6_jpoir")
+
+[sub_resource type="Theme" id="Theme_vu814"]
+Button/styles/normal = SubResource("StyleBoxTexture_gbl77")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e8jtd"]
 texture = ExtResource("3_oj1se")
@@ -58,18 +65,6 @@ texture = ExtResource("5_iwcoh")
 [sub_resource type="Theme" id="Theme_7gur6"]
 Button/styles/hover = SubResource("StyleBoxTexture_vhjc6")
 Button/styles/normal = SubResource("StyleBoxTexture_u3wdu")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d2qaa"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-draw_center = false
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iwb36"]
-
-[sub_resource type="Theme" id="Theme_51ieo"]
-Button/colors/font_color = Color(1, 1, 1, 0.635294)
-Button/font_sizes/font_size = 25
-Button/styles/hover = SubResource("StyleBoxFlat_d2qaa")
-Button/styles/normal = SubResource("StyleBoxEmpty_iwb36")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ki6yq"]
 texture = ExtResource("3_1fxtn")
@@ -177,12 +172,23 @@ script = ExtResource("2_4a8fq")
 
 [node name="MarginContainer" type="MarginContainer" parent="UI"]
 offset_left = 20.0
+offset_top = 28.0
 offset_right = 1150.0
 offset_bottom = 644.0
 size_flags_vertical = 8
 
+[node name="BackToMenuButton" type="Button" parent="UI/MarginContainer"]
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = SubResource("Theme_vu814")
+theme_override_font_sizes/font_size = 23
+alignment = 0
+icon_alignment = 1
+
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer"]
-custom_minimum_size = Vector2(200, 200)
+custom_minimum_size = Vector2(200, 160)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
@@ -211,16 +217,6 @@ layout_mode = 2
 theme = SubResource("Theme_7gur6")
 theme_override_font_sizes/font_size = 25
 
-[node name="BackToMenuButton" type="Button" parent="UI/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(220, 50)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 8
-theme = SubResource("Theme_51ieo")
-theme_override_font_sizes/font_size = 23
-text = "Вернуться к меню"
-icon_alignment = 1
-
 [node name="ButtonClickSound" type="AudioStreamPlayer" parent="UI"]
 stream = ExtResource("3_45d03")
 volume_db = -18.0
@@ -230,10 +226,10 @@ bus = &"SFX"
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -1078.0
-offset_top = -1279.0
-offset_right = 1813.0
-offset_bottom = 1849.0
+offset_left = -1086.0
+offset_top = -1265.0
+offset_right = 1805.0
+offset_bottom = 1863.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_1dlq8")
@@ -265,10 +261,10 @@ bus = &"Music"
 
 [node name="PausedMenu" parent="CanvasLayer" instance=ExtResource("25_71ny5")]
 
+[connection signal="pressed" from="UI/MarginContainer/BackToMenuButton" to="." method="_on_back_to_menu_button_pressed"]
 [connection signal="pressed" from="UI/MarginContainer/VBoxContainer/HBoxContainer/edgeButton" to="." method="_on_edge_button_pressed"]
 [connection signal="pressed" from="UI/MarginContainer/VBoxContainer/HBoxContainer/vertexButton" to="." method="_on_vertex_button_pressed"]
 [connection signal="pressed" from="UI/MarginContainer/VBoxContainer/HBoxContainer/moveButton" to="." method="_on_move_button_pressed"]
-[connection signal="pressed" from="UI/MarginContainer/VBoxContainer/BackToMenuButton" to="." method="_on_back_to_menu_button_pressed"]
 [connection signal="edgeHovered" from="EdgeTileMap" to="." method="_on_edge_hovered"]
 [connection signal="edgePressed" from="EdgeTileMap" to="." method="_on_edge_pressed"]
 [connection signal="edgeUnhovered" from="EdgeTileMap" to="." method="_on_edge_unhovered"]
