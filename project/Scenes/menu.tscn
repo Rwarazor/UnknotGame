@@ -13,10 +13,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7u33i"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wc11v"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-border_color = Color(1, 1, 1, 0)
-shadow_size = 5
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hytgb"]
 
 [sub_resource type="Theme" id="Theme_6vv4v"]
 Button/colors/font_color = Color(0.556863, 0.556863, 0.556863, 1)
@@ -24,7 +21,7 @@ Button/font_sizes/font_size = 25
 Button/styles/focus = SubResource("StyleBoxEmpty_fu8as")
 Button/styles/hover = SubResource("StyleBoxEmpty_hcula")
 Button/styles/normal = SubResource("StyleBoxEmpty_7u33i")
-Button/styles/pressed = SubResource("StyleBoxFlat_wc11v")
+Button/styles/pressed = SubResource("StyleBoxEmpty_hytgb")
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -109,7 +106,7 @@ text = "Настройки"
 [node name="ExitButton" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = SubResource("Theme_6vv4v")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 25
 text = "Выход"
 
 [node name="Music" type="AudioStreamPlayer" parent="."]

@@ -21,7 +21,9 @@ func _on_resume_button_pressed():
 func _on_menu_button_pressed():
 	button_click_sound.play()
 	await get_tree().create_timer(0.15).timeout
+	_is_paused = false
 	get_tree().change_scene_to_file("res://Scenes/menu.tscn")
+	
 
 func _on_quit_button_pressed():
 	button_click_sound.play()

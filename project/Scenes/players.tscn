@@ -1,10 +1,30 @@
-[gd_scene load_steps=5 format=3 uid="uid://cx0w5rjjyhxv5"]
+[gd_scene load_steps=12 format=3 uid="uid://cx0w5rjjyhxv5"]
 
 [ext_resource type="Script" path="res://Scripts/Players.gd" id="1_xw1e8"]
 [ext_resource type="Texture2D" uid="uid://bi6n5s8ckt04" path="res://assets/tiles/playersBackground.png" id="2_5bds1"]
 [ext_resource type="AudioStream" uid="uid://dmo7384pg4kh6" path="res://assets/playersClick.wav" id="3_tc5ug"]
+[ext_resource type="AudioStream" uid="uid://dss410n04r5m5" path="res://assets/simpleClick.wav" id="4_ufpio"]
 
 [sub_resource type="SystemFont" id="SystemFont_jmt8p"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lexi4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vrusv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aixtm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m24bx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q8oww"]
+
+[sub_resource type="Theme" id="Theme_e0hc2"]
+Button/colors/font_color = Color(0.627451, 0.627451, 0.627451, 0.972549)
+Button/colors/font_focus_color = Color(1, 1, 1, 0.894118)
+Button/styles/disabled = SubResource("StyleBoxEmpty_lexi4")
+Button/styles/focus = SubResource("StyleBoxEmpty_vrusv")
+Button/styles/hover = SubResource("StyleBoxEmpty_aixtm")
+Button/styles/normal = SubResource("StyleBoxEmpty_m24bx")
+Button/styles/pressed = SubResource("StyleBoxEmpty_q8oww")
 
 [node name="Players" type="Control"]
 layout_mode = 3
@@ -20,6 +40,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -17.0
+offset_right = 34.0
+offset_bottom = 21.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_5bds1")
@@ -31,8 +55,9 @@ anchors_preset = 13
 anchor_left = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -298.5
-offset_right = 298.5
+offset_left = -302.0
+offset_right = 302.0
+offset_bottom = -19.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -95,7 +120,22 @@ stream = ExtResource("3_tc5ug")
 volume_db = -2.0
 bus = &"SFX"
 
+[node name="ButtonClickSound" type="AudioStreamPlayer" parent="MarginContainer"]
+stream = ExtResource("4_ufpio")
+volume_db = -18.0
+bus = &"SFX"
+
+[node name="BackToMenuButton" type="Button" parent="MarginContainer"]
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme = SubResource("Theme_e0hc2")
+theme_override_font_sizes/font_size = 25
+text = "Назад"
+
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/OnePlayer" to="." method="_on_one_player_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/ThreePlayers" to="." method="_on_three_players_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer2/TwoPlayers" to="." method="_on_two_players_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer2/FourPlayers" to="." method="_on_four_players_pressed"]
+[connection signal="pressed" from="MarginContainer/BackToMenuButton" to="." method="_on_back_to_menu_button_pressed"]

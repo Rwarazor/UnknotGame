@@ -40,8 +40,8 @@ theme_override_constants/v_separation = 8
 
 [node name="Label" type="Label" parent="GridContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 0.658824)
-theme_override_font_sizes/font_size = 25
+theme_override_colors/font_color = Color(1, 1, 1, 0.921569)
+theme_override_font_sizes/font_size = 30
 text = "Остановлено"
 horizontal_alignment = 1
 

@@ -62,6 +62,12 @@ func _on_move_button_pressed():
 var player_colors = []
 var game_colors = [Color(0,1,1,1), Color(1,0,1,1), Color(1,1,0,1), Color(0.486275, 0.988235, 0, 1)]
 
+func _update_labels(player: int, energy: int, color: Color):
+	$UI/MarginContainer/VBoxContainer2/PlayerLabel.text = str("Игрок №", player)
+	$UI/MarginContainer/VBoxContainer2/EnergyLabel.text = str("Энергии: ", energy)
+	$UI/MarginContainer/VBoxContainer2/PlayerLabel.add_theme_color_override("font_color", color)
+	$UI/MarginContainer/VBoxContainer2/EnergyLabel.add_theme_color_override("font_color", color)
+
 func _ready() -> void:
 	$VertexTileMap.reset(WIDTH_TILES, HEIGHT_TILES)
 	$EdgeTileMap.reset(WIDTH_TILES, HEIGHT_TILES)
@@ -101,7 +107,7 @@ func _ready() -> void:
 				var upper = $UnknoterNode.get_upper_vertex_player(x, y)
 				if upper != -1:
 					$VertexTileMap.change_tile(upper, Vector2i(x, y), VERTEX_TILE_COLOR)
-
+	_update_labels(1, 2, player_colors[0])
 func is_edge_alt(edge: Vector2i) -> int:
 	return edge[0] & 1
 
