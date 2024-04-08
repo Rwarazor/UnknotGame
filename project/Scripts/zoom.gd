@@ -48,7 +48,7 @@ func _handle_zoom(event: InputEvent) -> void:
 			if event.button_index == MOUSE_BUTTON_WHEEL_UP:
 				change_zoom(zoom_speed)
 	if event is InputEventPanGesture:
-		change_zoom(zoom_speed * event.delta)
+		change_zoom(zoom_speed * event.delta[0])
 
 func _handle_drag(event: InputEvent) -> void:
 	if not allow_dragging:
