@@ -1,10 +1,10 @@
 [gd_scene load_steps=8 format=3 uid="uid://kiyynqoroydt"]
 
-[ext_resource type="Script" path="res://Scenes/settings.gd" id="1_0ujdt"]
-[ext_resource type="Texture2D" uid="uid://dy2tl37wg52lk" path="res://assets/tiles/menuBackground.png" id="1_oarw7"]
-[ext_resource type="Script" path="res://Scenes/music_slider.gd" id="3_0p0hr"]
-[ext_resource type="AudioStream" uid="uid://dss410n04r5m5" path="res://assets/simpleClick.wav" id="3_eljc5"]
-[ext_resource type="Script" path="res://Scenes/sfx_slider.gd" id="4_uhpca"]
+[ext_resource type="Script" path="res://Scripts/settings.gd" id="1_0ujdt"]
+[ext_resource type="Texture2D" uid="uid://dy2tl37wg52lk" path="res://assets/background/menuBackground.png" id="1_oarw7"]
+[ext_resource type="Script" path="res://Scripts/music_slider.gd" id="3_0p0hr"]
+[ext_resource type="AudioStream" uid="uid://dss410n04r5m5" path="res://assets/sound/simpleClick.wav" id="3_eljc5"]
+[ext_resource type="Script" path="res://Scripts/sfx_slider.gd" id="4_uhpca"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7dmsg"]
 bg_color = Color(0.541966, 0.784297, 1.15514e-06, 0.768627)

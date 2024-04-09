@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://ck56ipivmx5eb"]
 
 [ext_resource type="Script" path="res://Scripts/rules.gd" id="1_a5ifw"]
-[ext_resource type="Texture2D" uid="uid://dy2tl37wg52lk" path="res://assets/tiles/menuBackground.png" id="1_igh4w"]
-[ext_resource type="AudioStream" uid="uid://dss410n04r5m5" path="res://assets/simpleClick.wav" id="3_wkx7x"]
+[ext_resource type="Texture2D" uid="uid://dy2tl37wg52lk" path="res://assets/background/menuBackground.png" id="1_igh4w"]
+[ext_resource type="AudioStream" uid="uid://dss410n04r5m5" path="res://assets/sound/simpleClick.wav" id="3_wkx7x"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ddjl"]
 bg_color = Color(0.137255, 0.137255, 0.137255, 0.768627)

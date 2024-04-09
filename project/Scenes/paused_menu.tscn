@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cijaooi8ujuay"]
 
-[ext_resource type="Script" path="res://paused_menu.gd" id="1_868sl"]
-[ext_resource type="AudioStream" uid="uid://dss410n04r5m5" path="res://assets/simpleClick.wav" id="2_eccde"]
+[ext_resource type="Script" path="res://Scripts/paused_menu.gd" id="1_868sl"]
+[ext_resource type="AudioStream" uid="uid://dss410n04r5m5" path="res://assets/sound/simpleClick.wav" id="2_eccde"]
 
 [node name="PausedMenu" type="Control"]
 process_mode = 3

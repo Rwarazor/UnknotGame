@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b82jnhfauk5o4"
-path="res://.godot/imported/handIcon.png-c4e316e0b6f9b698c7ecb4c407cc7297.ctex"
+uid="uid://byjgr6mkklsi7"
+path="res://.godot/imported/edgeIcon.png-7bdbaa859585a237d3b172d154237cb5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tiles/handIcon.png"
-dest_files=["res://.godot/imported/handIcon.png-c4e316e0b6f9b698c7ecb4c407cc7297.ctex"]
+source_file="res://assets/icons/edgeIcon.png"
+dest_files=["res://.godot/imported/edgeIcon.png-7bdbaa859585a237d3b172d154237cb5.ctex"]
 
 [params]
 
