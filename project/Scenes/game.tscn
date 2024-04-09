@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=3 uid="uid://cbdggtmlpwk7n"]
+[gd_scene load_steps=72 format=3 uid="uid://cbdggtmlpwk7n"]
 
 [ext_resource type="Script" path="res://Scripts/game.gd" id="1_7wbfd"]
 [ext_resource type="Script" path="res://Scripts/zoom.gd" id="2_4a8fq"]
@@ -82,17 +82,45 @@ texture = ExtResource("5_iwcoh")
 Button/styles/hover = SubResource("StyleBoxTexture_vhjc6")
 Button/styles/normal = SubResource("StyleBoxTexture_u3wdu")
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qtlnk"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8ndjq"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q52fm"]
+texture = ExtResource("7_r8w3x")
+modulate_color = Color(0.929412, 0.929412, 0.929412, 0.886275)
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7b0t2"]
 texture = ExtResource("7_r8w3x")
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gfyp5"]
+
 [sub_resource type="Theme" id="Theme_ipqs6"]
+Button/styles/disabled = SubResource("StyleBoxEmpty_qtlnk")
+Button/styles/focus = SubResource("StyleBoxEmpty_8ndjq")
+Button/styles/hover = SubResource("StyleBoxTexture_q52fm")
 Button/styles/normal = SubResource("StyleBoxTexture_7b0t2")
+Button/styles/pressed = SubResource("StyleBoxEmpty_gfyp5")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7s2x8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cn11u"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sclro"]
+texture = ExtResource("8_c41o6")
+modulate_color = Color(1, 1, 1, 0.760784)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_to1kj"]
 texture = ExtResource("8_c41o6")
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rqpo7"]
+
 [sub_resource type="Theme" id="Theme_4oc5f"]
+Button/styles/disabled = SubResource("StyleBoxEmpty_7s2x8")
+Button/styles/focus = SubResource("StyleBoxEmpty_cn11u")
+Button/styles/hover = SubResource("StyleBoxTexture_sclro")
 Button/styles/normal = SubResource("StyleBoxTexture_to1kj")
+Button/styles/pressed = SubResource("StyleBoxEmpty_rqpo7")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ki6yq"]
 texture = ExtResource("3_1fxtn")

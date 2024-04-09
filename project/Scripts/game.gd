@@ -65,16 +65,17 @@ func _on_move_button_pressed():
 func _on_cancel_button_pressed():
 	if current_state == STATE.CONFIRM_EDGES_MOVE:
 		current_state = STATE.START_SELECTING_EDGES
+		_on_edge_unhovered()
 	else:
 		current_state = STATE.SELECT_VERTEX
 
 func _on_confirm_button_pressed():
 	current_state = STATE.DRAG
-	if current_player < Global.players:
+	if current_player < Global.players-1:
 		current_player +=1
 	else: 
-		current_player = 1
-	_update_labels(current_player, 1, player_colors[current_player - 1])
+		current_player = 0
+	_update_labels(current_player, 1, player_colors[current_player])
 	$UI/MarginContainer/HBoxContainer/CancelButton.visible = false
 	$UI/MarginContainer/HBoxContainer/ConfirmButton.visible = false
 
@@ -82,7 +83,7 @@ var player_colors = []
 var game_colors = [Color(0,1,1,1), Color(1,0,1,1), Color(1,1,0,1), Color(0.486275, 0.988235, 0, 1)]
 
 func _update_labels(player: int, energy: int, color: Color):
-	$UI/MarginContainer/VBoxContainer2/PlayerLabel.text = str("Игрок №", player)
+	$UI/MarginContainer/VBoxContainer2/PlayerLabel.text = str("Игрок №", player+1)
 	$UI/MarginContainer/VBoxContainer2/EnergyLabel.text = str("Энергии: ", energy)
 	$UI/MarginContainer/VBoxContainer2/PlayerLabel.add_theme_color_override("font_color", color)
 	$UI/MarginContainer/VBoxContainer2/EnergyLabel.add_theme_color_override("font_color", color)
@@ -142,7 +143,8 @@ func _ready() -> void:
 				var upper = $UnknoterNode.get_upper_vertex_player(x, y)
 				if upper != -1:
 					$VertexTileMap.change_tile(upper, Vector2i(x, y), VERTEX_TILE_COLOR)
-	_update_labels(current_player + 1, 2, player_colors[current_player])
+	_update_labels(current_player, 2, player_colors[current_player])
+	
 func is_edge_alt(edge: Vector2i) -> int:
 	return edge[0] & 1
 
@@ -250,7 +252,6 @@ func _on_edge_hovered(edge: Vector2i) -> void:
 		_draw_selected_edges()
 
 	if current_state == STATE.MOVING_EDGES:
-		$UI/MarginContainer/HBoxContainer/CancelButton.visible = true
 		var new_perpendicular_offset
 		if !is_selected_edge_alt:
 			new_perpendicular_offset = (edge[0] - current_selected_edge[0]) / 2
@@ -291,6 +292,7 @@ func _on_edge_pressed(edge) -> void:
 		current_state = STATE.CONFIRM_EDGES_MOVE
 		$UI/MarginContainer/HBoxContainer/CancelButton.visible = true
 		$UI/MarginContainer/HBoxContainer/ConfirmButton.visible = true
+		
 
 func _on_edge_unpressed(edge) -> void:
 	if current_state == STATE.SELECTING_EDGES:
