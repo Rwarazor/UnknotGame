@@ -298,12 +298,14 @@ size_flags_vertical = 4
 alignment = 1
 
 [node name="CancelButton" type="Button" parent="UI/MarginContainer/HBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme = SubResource("Theme_ipqs6")
 
 [node name="ConfirmButton" type="Button" parent="UI/MarginContainer/HBoxContainer"]
 auto_translate_mode = 1
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme = SubResource("Theme_4oc5f")

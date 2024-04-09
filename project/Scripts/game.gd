@@ -37,8 +37,31 @@ var VERTEX_TILE_SELECTED = 2
 func _refresh_state():
 	_clear_edge_tiles()
 	_clear_vertex_tiles()
+	$UI/MarginContainer/HBoxContainer/CancelButton.visible = (
+		current_state in [STATE.MOVING_EDGES, STATE.CONFIRM_EDGES_MOVE, STATE.CONFIRM_VERTEX])
+	$UI/MarginContainer/HBoxContainer/ConfirmButton.visible = (
+		current_state in [STATE.CONFIRM_EDGES_MOVE, STATE.CONFIRM_VERTEX])
 	$Zoom.allow_dragging = (current_state == STATE.DRAG)
-	
+
+func _redraw_field():
+	for player in range(Global.players):
+		$EdgeTileMap.clear_layer(1 + player)
+		$VertexTileMap.clear_layer(player)
+
+	for x in range(0, 2 * WIDTH_TILES + 1):
+		for y in range(0, 2 * HEIGHT_TILES + 1):
+			if (x & 1) and (y & 1):
+				continue
+			if (x + y) & 1:
+				var player = $UnknoterNode.get_edge_player(x, y)
+				if player != -1:
+					var edge = Vector2i(x, y)
+					$EdgeTileMap.change_tile(1 + player, edge, EDGE_TILE_COLOR + is_edge_alt(edge))
+			else:
+				var upper = $UnknoterNode.get_upper_vertex_player(x, y)
+				if upper != -1:
+					$VertexTileMap.change_tile(upper, Vector2i(x, y), VERTEX_TILE_COLOR)
+
 func _on_back_to_menu_button_pressed():
 	button_click_sound.play()
 	await get_tree().create_timer(0.15).timeout
@@ -63,30 +86,40 @@ func _on_move_button_pressed():
 	_refresh_state()
 
 func _on_cancel_button_pressed():
-	if current_state == STATE.CONFIRM_EDGES_MOVE:
+	if current_state == STATE.CONFIRM_EDGES_MOVE or current_state == STATE.MOVING_EDGES:
 		current_state = STATE.START_SELECTING_EDGES
-		_on_edge_unhovered()
 	else:
 		current_state = STATE.SELECT_VERTEX
+	_refresh_state()
 
 func _on_confirm_button_pressed():
+	if current_state == STATE.CONFIRM_EDGES_MOVE:
+		$UnknoterNode.shift_edges(
+			current_selected_edge[0],
+			current_selected_edge[1],
+			current_selected_offset,
+			current_perpindicular_offset
+		)
+	elif current_state == STATE.CONFIRM_VERTEX:
+		$UnknoterNode.flip_vertex(
+			current_selected_vertex[0],
+			current_selected_vertex[1]
+		)
 	current_state = STATE.DRAG
-	if current_player < Global.players-1:
-		current_player +=1
-	else: 
-		current_player = 0
-	_update_labels(current_player, 1, player_colors[current_player])
-	$UI/MarginContainer/HBoxContainer/CancelButton.visible = false
-	$UI/MarginContainer/HBoxContainer/ConfirmButton.visible = false
+	current_player = (current_player + 1) % Global.players
+	_refresh_state()
+	_redraw_field()
+	_update_labels()
 
 var player_colors = []
+var player_energies = []
 var game_colors = [Color(0,1,1,1), Color(1,0,1,1), Color(1,1,0,1), Color(0.486275, 0.988235, 0, 1)]
 
-func _update_labels(player: int, energy: int, color: Color):
-	$UI/MarginContainer/VBoxContainer2/PlayerLabel.text = str("Игрок №", player+1)
-	$UI/MarginContainer/VBoxContainer2/EnergyLabel.text = str("Энергии: ", energy)
-	$UI/MarginContainer/VBoxContainer2/PlayerLabel.add_theme_color_override("font_color", color)
-	$UI/MarginContainer/VBoxContainer2/EnergyLabel.add_theme_color_override("font_color", color)
+func _update_labels():
+	$UI/MarginContainer/VBoxContainer2/PlayerLabel.text = str("Игрок №", current_player + 1)
+	$UI/MarginContainer/VBoxContainer2/EnergyLabel.text = str("Энергии: ", player_energies[current_player])
+	$UI/MarginContainer/VBoxContainer2/PlayerLabel.add_theme_color_override("font_color", player_colors[current_player])
+	$UI/MarginContainer/VBoxContainer2/EnergyLabel.add_theme_color_override("font_color", player_colors[current_player])
 
 func _save() -> void:
 	$UnknoterNode.set_current_player(current_player)
@@ -105,9 +138,7 @@ func _ready() -> void:
 		_load()
 	else:
 		$UnknoterNode.reset(Global.players, WIDTH_TILES, HEIGHT_TILES)
-		
-	$UI/MarginContainer/HBoxContainer/CancelButton.visible = false
-	$UI/MarginContainer/HBoxContainer/ConfirmButton.visible = false
+
 	$VertexTileMap.reset(WIDTH_TILES, HEIGHT_TILES)
 	$EdgeTileMap.reset(WIDTH_TILES, HEIGHT_TILES)
 	_on_move_button_pressed()
@@ -125,26 +156,15 @@ func _ready() -> void:
 		while player_colors.has(color):
 			color = game_colors[randf_range(0, 4)]
 		player_colors.push_back(color)
+		player_energies.push_back(2)
 		$EdgeTileMap.add_layer(1 + player)
 		$EdgeTileMap.set_layer_modulate(1 + player, color)
 		$VertexTileMap.add_layer(player)
 		$VertexTileMap.set_layer_modulate(player, color)
 
-	for x in range(0, 2 * WIDTH_TILES + 1):
-		for y in range(0, 2 * HEIGHT_TILES + 1):
-			if (x & 1) and (y & 1):
-				continue
-			if (x + y) & 1:
-				var player = $UnknoterNode.get_edge_player(x, y)
-				if player != -1:
-					var edge = Vector2i(x, y)
-					$EdgeTileMap.change_tile(1 + player, edge, EDGE_TILE_COLOR + is_edge_alt(edge))
-			else:
-				var upper = $UnknoterNode.get_upper_vertex_player(x, y)
-				if upper != -1:
-					$VertexTileMap.change_tile(upper, Vector2i(x, y), VERTEX_TILE_COLOR)
-	_update_labels(current_player, 2, player_colors[current_player])
-	
+	_redraw_field()
+	_update_labels()
+
 func is_edge_alt(edge: Vector2i) -> int:
 	return edge[0] & 1
 
@@ -342,8 +362,6 @@ func _on_vertex_pressed(vertex) -> void:
 	if current_state == STATE.SELECT_VERTEX or current_state == STATE.CONFIRM_VERTEX:
 		current_state = STATE.CONFIRM_VERTEX
 		current_selected_vertex = vertex
-		$UI/MarginContainer/HBoxContainer/CancelButton.visible = true
-		$UI/MarginContainer/HBoxContainer/ConfirmButton.visible = true
-		_clear_vertex_tiles()
+		_refresh_state()
 		_change_vertex_tile(vertex, VERTEX_TILE_SELECTED)
 
