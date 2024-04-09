@@ -303,3 +303,4 @@ bus = &"Music"
 [connection signal="vertexHovered" from="VertexTileMap" to="." method="_on_vertex_hovered"]
 [connection signal="vertexPressed" from="VertexTileMap" to="." method="_on_vertex_pressed"]
 [connection signal="vertexUnhovered" from="VertexTileMap" to="." method="_on_vertex_unhovered"]
+[connection signal="save" from="CanvasLayer/PausedMenu" to="." method="_on_save"]

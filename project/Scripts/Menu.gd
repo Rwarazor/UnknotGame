@@ -11,7 +11,8 @@ func _on_new_game_button_pressed():
 func _on_continue_game_button_pressed():
 	button_click_sound.play()
 	await get_tree().create_timer(0.15).timeout
-	pass # Продолжить игру
+	Global.do_load = true
+	get_tree().change_scene_to_file("res://Scenes/game.tscn")
 
 
 func _on_tutorial_button_pressed():

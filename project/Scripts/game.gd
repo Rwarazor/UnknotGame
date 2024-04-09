@@ -43,7 +43,10 @@ func _on_back_to_menu_button_pressed():
 	button_click_sound.play()
 	await get_tree().create_timer(0.15).timeout
 	get_node("CanvasLayer/PausedMenu")._is_paused = !get_node("CanvasLayer/PausedMenu")._is_paused
-	
+
+func _on_save() -> void:
+	_save()
+
 func _on_edge_button_pressed():
 	button_click_sound.play()
 	current_state = STATE.START_SELECTING_EDGES
@@ -68,7 +71,24 @@ func _update_labels(player: int, energy: int, color: Color):
 	$UI/MarginContainer/VBoxContainer2/PlayerLabel.add_theme_color_override("font_color", color)
 	$UI/MarginContainer/VBoxContainer2/EnergyLabel.add_theme_color_override("font_color", color)
 
+func _save() -> void:
+	$UnknoterNode.set_current_player(current_player)
+	$UnknoterNode.save("user://game.save")
+
+func _load() -> void:
+	$UnknoterNode.load("user://game.save")
+	WIDTH_TILES = $UnknoterNode.get_width()
+	HEIGHT_TILES = $UnknoterNode.get_height()
+	Global.players = $UnknoterNode.get_players()
+	current_player = $UnknoterNode.get_current_player()
+
 func _ready() -> void:
+	if Global.do_load:
+		Global.do_load = false
+		_load()
+	else:
+		$UnknoterNode.reset(Global.players, WIDTH_TILES, HEIGHT_TILES)
+
 	$VertexTileMap.reset(WIDTH_TILES, HEIGHT_TILES)
 	$EdgeTileMap.reset(WIDTH_TILES, HEIGHT_TILES)
 	_on_move_button_pressed()
@@ -80,9 +100,6 @@ func _ready() -> void:
 		ZOOM_BORDERS_INFLATE_Y
 	)
 	$Zoom.set_bounds(field_bounds + inflate)
-
-	# TODO: fix later
-	$UnknoterNode.reset(Global.players, 30, 30)
 
 	for player in range(Global.players):
 		var color = game_colors[randf_range(0, 4)]
@@ -107,7 +124,7 @@ func _ready() -> void:
 				var upper = $UnknoterNode.get_upper_vertex_player(x, y)
 				if upper != -1:
 					$VertexTileMap.change_tile(upper, Vector2i(x, y), VERTEX_TILE_COLOR)
-	_update_labels(1, 2, player_colors[0])
+	_update_labels(current_player + 1, 2, player_colors[current_player])
 func is_edge_alt(edge: Vector2i) -> int:
 	return edge[0] & 1
 
@@ -304,8 +321,3 @@ func _on_vertex_pressed(vertex) -> void:
 		#TODO: create confirm UI
 		_clear_vertex_tiles()
 		_change_vertex_tile(vertex, VERTEX_TILE_SELECTED)
-
-
-
-
-
