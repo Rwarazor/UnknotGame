@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://cbdggtmlpwk7n"]
+[gd_scene load_steps=64 format=3 uid="uid://cbdggtmlpwk7n"]
 
 [ext_resource type="Script" path="res://Scripts/game.gd" id="1_7wbfd"]
 [ext_resource type="Script" path="res://Scripts/zoom.gd" id="2_4a8fq"]
@@ -17,7 +17,9 @@
 [ext_resource type="Texture2D" uid="uid://dla2vgbn0bgm0" path="res://assets/icons/pause.png" id="6_jpoir"]
 [ext_resource type="Texture2D" uid="uid://hesyw407j12g" path="res://assets/tiles/edgeTileSelected.png" id="7_kq5mi"]
 [ext_resource type="Texture2D" uid="uid://bwtj6b5bc6fx3" path="res://assets/tiles/dotTileColor.png" id="7_orf88"]
+[ext_resource type="Texture2D" uid="uid://b8pupyasumdkf" path="res://assets/icons/cross.png" id="7_r8w3x"]
 [ext_resource type="Texture2D" uid="uid://dpq083wqjdqpi" path="res://assets/tiles/dotTileSelected.png" id="8_47n8j"]
+[ext_resource type="Texture2D" uid="uid://cm4vjfpjdds5y" path="res://assets/icons/checkMark.png" id="8_c41o6"]
 [ext_resource type="Texture2D" uid="uid://dgbpjl0xpt5nn" path="res://assets/tiles/edgeTileFuture.png" id="9_k3tl7"]
 [ext_resource type="Script" path="res://Scripts/vertexTileMap.gd" id="9_l4svq"]
 [ext_resource type="Texture2D" uid="uid://bg5bnuywekwv6" path="res://assets/tiles/dotTileHovered.png" id="9_teopa"]
@@ -79,6 +81,18 @@ texture = ExtResource("5_iwcoh")
 [sub_resource type="Theme" id="Theme_7gur6"]
 Button/styles/hover = SubResource("StyleBoxTexture_vhjc6")
 Button/styles/normal = SubResource("StyleBoxTexture_u3wdu")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7b0t2"]
+texture = ExtResource("7_r8w3x")
+
+[sub_resource type="Theme" id="Theme_ipqs6"]
+Button/styles/normal = SubResource("StyleBoxTexture_7b0t2")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_to1kj"]
+texture = ExtResource("8_c41o6")
+
+[sub_resource type="Theme" id="Theme_4oc5f"]
+Button/styles/normal = SubResource("StyleBoxTexture_to1kj")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ki6yq"]
 texture = ExtResource("3_1fxtn")
@@ -248,6 +262,24 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "Энергия: "
 
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer"]
+custom_minimum_size = Vector2(200, 80)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+alignment = 1
+
+[node name="CancelButton" type="Button" parent="UI/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme = SubResource("Theme_ipqs6")
+
+[node name="ConfirmButton" type="Button" parent="UI/MarginContainer/HBoxContainer"]
+auto_translate_mode = 1
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme = SubResource("Theme_4oc5f")
+
 [node name="ButtonClickSound" type="AudioStreamPlayer" parent="UI"]
 stream = ExtResource("3_45d03")
 volume_db = -18.0
@@ -257,10 +289,10 @@ bus = &"SFX"
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -522.0
-offset_top = -1298.0
-offset_right = 2369.0
-offset_bottom = 1830.0
+offset_left = -541.0
+offset_top = -1323.0
+offset_right = 2350.0
+offset_bottom = 1805.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_1dlq8")
@@ -296,6 +328,8 @@ bus = &"Music"
 [connection signal="pressed" from="UI/MarginContainer/VBoxContainer/HBoxContainer/edgeButton" to="." method="_on_edge_button_pressed"]
 [connection signal="pressed" from="UI/MarginContainer/VBoxContainer/HBoxContainer/vertexButton" to="." method="_on_vertex_button_pressed"]
 [connection signal="pressed" from="UI/MarginContainer/VBoxContainer/HBoxContainer/moveButton" to="." method="_on_move_button_pressed"]
+[connection signal="pressed" from="UI/MarginContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
+[connection signal="pressed" from="UI/MarginContainer/HBoxContainer/ConfirmButton" to="." method="_on_confirm_button_pressed"]
 [connection signal="edgeHovered" from="EdgeTileMap" to="." method="_on_edge_hovered"]
 [connection signal="edgePressed" from="EdgeTileMap" to="." method="_on_edge_pressed"]
 [connection signal="edgeUnhovered" from="EdgeTileMap" to="." method="_on_edge_unhovered"]

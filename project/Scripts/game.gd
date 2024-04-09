@@ -61,7 +61,23 @@ func _on_move_button_pressed():
 	current_state = STATE.DRAG
 	button_click_sound.play()
 	_refresh_state()
-	
+
+func _on_cancel_button_pressed():
+	if current_state == STATE.CONFIRM_EDGES_MOVE:
+		current_state = STATE.START_SELECTING_EDGES
+	else:
+		current_state = STATE.SELECT_VERTEX
+
+func _on_confirm_button_pressed():
+	current_state = STATE.DRAG
+	if current_player < Global.players:
+		current_player +=1
+	else: 
+		current_player = 1
+	_update_labels(current_player, 1, player_colors[current_player - 1])
+	$UI/MarginContainer/HBoxContainer/CancelButton.visible = false
+	$UI/MarginContainer/HBoxContainer/ConfirmButton.visible = false
+
 var player_colors = []
 var game_colors = [Color(0,1,1,1), Color(1,0,1,1), Color(1,1,0,1), Color(0.486275, 0.988235, 0, 1)]
 
@@ -88,7 +104,9 @@ func _ready() -> void:
 		_load()
 	else:
 		$UnknoterNode.reset(Global.players, WIDTH_TILES, HEIGHT_TILES)
-
+		
+	$UI/MarginContainer/HBoxContainer/CancelButton.visible = false
+	$UI/MarginContainer/HBoxContainer/ConfirmButton.visible = false
 	$VertexTileMap.reset(WIDTH_TILES, HEIGHT_TILES)
 	$EdgeTileMap.reset(WIDTH_TILES, HEIGHT_TILES)
 	_on_move_button_pressed()
@@ -232,6 +250,7 @@ func _on_edge_hovered(edge: Vector2i) -> void:
 		_draw_selected_edges()
 
 	if current_state == STATE.MOVING_EDGES:
+		$UI/MarginContainer/HBoxContainer/CancelButton.visible = true
 		var new_perpendicular_offset
 		if !is_selected_edge_alt:
 			new_perpendicular_offset = (edge[0] - current_selected_edge[0]) / 2
@@ -266,14 +285,17 @@ func _on_edge_pressed(edge) -> void:
 		current_perpindicular_offset = 0
 		_change_edge_tile(edge, EDGE_TILE_HOVERED + is_selected_edge_alt)
 	if current_state == STATE.MOVING_EDGES:
+		$UI/MarginContainer/HBoxContainer/CancelButton.visible = true
 		if current_perpindicular_offset == 0:
 			return
 		current_state = STATE.CONFIRM_EDGES_MOVE
-		#TODO: spawn confirm UI
+		$UI/MarginContainer/HBoxContainer/CancelButton.visible = true
+		$UI/MarginContainer/HBoxContainer/ConfirmButton.visible = true
 
 func _on_edge_unpressed(edge) -> void:
 	if current_state == STATE.SELECTING_EDGES:
 		current_state = STATE.MOVING_EDGES
+		$UI/MarginContainer/HBoxContainer/CancelButton.visible = true
 		_draw_selected_edges()
 
 var changed_vertex_tiles = []
@@ -318,6 +340,8 @@ func _on_vertex_pressed(vertex) -> void:
 	if current_state == STATE.SELECT_VERTEX or current_state == STATE.CONFIRM_VERTEX:
 		current_state = STATE.CONFIRM_VERTEX
 		current_selected_vertex = vertex
-		#TODO: create confirm UI
+		$UI/MarginContainer/HBoxContainer/CancelButton.visible = true
+		$UI/MarginContainer/HBoxContainer/ConfirmButton.visible = true
 		_clear_vertex_tiles()
 		_change_vertex_tile(vertex, VERTEX_TILE_SELECTED)
+
