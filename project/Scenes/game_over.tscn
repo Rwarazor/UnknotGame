@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://demjnjxb7g2ph"]
 
 [ext_resource type="Texture2D" uid="uid://blxwa0h1e81kv" path="res://assets/background/gameOverBackground.png" id="1_0k1x3"]
-[ext_resource type="Script" path="res://Scenes/game_over.gd" id="1_crmng"]
+[ext_resource type="Script" path="res://Scripts/game_over.gd" id="1_gxxoa"]
 [ext_resource type="AudioStream" uid="uid://dss410n04r5m5" path="res://assets/sound/simpleClick.wav" id="3_fymvo"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nhp0o"]
@@ -30,7 +30,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_crmng")
+script = ExtResource("1_gxxoa")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
