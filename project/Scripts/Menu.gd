@@ -2,6 +2,9 @@ extends Control
 
 @onready var button_click_sound = $MarginContainer/VBoxContainer/ButtonClickSound
 
+func _ready():
+	$MarginContainer/VBoxContainer/ContinueGameButton.disabled = !FileAccess.file_exists("user://game.save")
+
 func _on_new_game_button_pressed():
 	button_click_sound.play()
 	await get_tree().create_timer(0.15).timeout
