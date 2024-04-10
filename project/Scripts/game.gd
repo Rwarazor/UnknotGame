@@ -6,6 +6,9 @@ extends Node2D
 @export var ZOOM_BORDERS_INFLATE_X = 500
 @export var ZOOM_BORDERS_INFLATE_Y = 500
 
+@export var STARTING_ENERGY: int
+@export var ENERGY_PER_TURN: int
+
 @onready var button_click_sound = $UI/ButtonClickSound
 
 enum STATE {
@@ -34,13 +37,20 @@ var VERTEX_TILE_COLOR = 0
 var VERTEX_TILE_HOVERED = 1
 var VERTEX_TILE_SELECTED = 2
 
-func _refresh_state():
+func _clear_field():
 	_clear_edge_tiles()
 	_clear_vertex_tiles()
+
+func _refresh_state():
 	$UI/MarginContainer/HBoxContainer/CancelButton.visible = (
 		current_state in [STATE.MOVING_EDGES, STATE.CONFIRM_EDGES_MOVE, STATE.CONFIRM_VERTEX])
+	# TODO
+	#<Energy cost text>.visible = (
+	#	current_state in [STATE.MOVING_EDGES, STATE.CONFIRM_EDGES_MOVE])
 	$UI/MarginContainer/HBoxContainer/ConfirmButton.visible = (
-		current_state in [STATE.CONFIRM_EDGES_MOVE, STATE.CONFIRM_VERTEX])
+		current_state == STATE.CONFIRM_VERTEX or (
+		current_state == STATE.CONFIRM_EDGES_MOVE and current_edge_move_cost <= player_energies[current_player]
+	))
 	$Zoom.allow_dragging = (current_state == STATE.DRAG)
 
 func _redraw_field():
@@ -84,16 +94,19 @@ func _on_save() -> void:
 func _on_edge_button_pressed():
 	button_click_sound.play()
 	current_state = STATE.START_SELECTING_EDGES
+	_clear_field()
 	_refresh_state()
 	
 func _on_vertex_button_pressed():
 	button_click_sound.play()
 	current_state = STATE.SELECT_VERTEX
+	_clear_field()
 	_refresh_state()
 	
 func _on_move_button_pressed():
 	current_state = STATE.DRAG
 	button_click_sound.play()
+	_clear_field()
 	_refresh_state()
 
 func _on_cancel_button_pressed():
@@ -101,10 +114,12 @@ func _on_cancel_button_pressed():
 		current_state = STATE.START_SELECTING_EDGES
 	else:
 		current_state = STATE.SELECT_VERTEX
+	_clear_field()
 	_refresh_state()
 
 func _on_confirm_button_pressed():
 	if current_state == STATE.CONFIRM_EDGES_MOVE:
+		player_energies[current_player] -= current_edge_move_cost
 		$UnknoterNode.shift_edges(
 			current_selected_edge[0],
 			current_selected_edge[1],
@@ -116,9 +131,11 @@ func _on_confirm_button_pressed():
 			current_selected_vertex[0],
 			current_selected_vertex[1]
 		)
+	player_energies[current_player] += ENERGY_PER_TURN
 	_check_win()
 	current_state = STATE.DRAG
 	current_player = (current_player + 1) % Global.players
+	_clear_field()
 	_refresh_state()
 	_redraw_field()
 	_update_labels()
@@ -133,7 +150,13 @@ func _update_labels():
 	$UI/MarginContainer/VBoxContainer2/PlayerLabel.add_theme_color_override("font_color", player_colors[current_player])
 	$UI/MarginContainer/VBoxContainer2/EnergyLabel.add_theme_color_override("font_color", player_colors[current_player])
 
+func _update_energy_cost_text():
+	# TODO
+	pass
+
 func _save() -> void:
+	for player in range(Global.players):
+		$UnknoterNode.set_param("energy" + str(player + 1), player_energies[player])
 	$UnknoterNode.set_param("current_player", current_player)
 	$UnknoterNode.save("user://game.save")
 
@@ -144,6 +167,9 @@ func _load() -> void:
 	Global.players = $UnknoterNode.get_param("players")
 	Global.virtual_players = $UnknoterNode.get_param("virtual_players")
 	current_player = $UnknoterNode.get_param("current_player")
+	player_energies = []
+	for player in range(Global.players):
+		player_energies.append($UnknoterNode.get_param("energy" + str(player + 1)))
 
 func _ready() -> void:
 	if Global.do_load:
@@ -173,7 +199,7 @@ func _ready() -> void:
 		while player_colors.has(color):
 			color = game_colors[randf_range(0, 4)]
 		player_colors.push_back(color)
-		player_energies.push_back(2)
+		player_energies.push_back(STARTING_ENERGY)
 		$EdgeTileMap.add_layer(1 + player)
 		$EdgeTileMap.set_layer_modulate(1 + player, color)
 		$VertexTileMap.add_layer(player)
@@ -214,6 +240,8 @@ func _change_edge_tile(edge: Vector2i, source_id: int):
 	var was_ours = $UnknoterNode.get_edge_player(edge[0], edge[1]) == current_player
 	changed_edge_tiles.push_back([edge, was_ours])
 
+var current_edge_move_cost = 0
+
 func _draw_selected_edges():
 	_clear_edge_tiles()
 	var other_selected_edge = current_selected_edge
@@ -236,6 +264,7 @@ func _draw_selected_edges():
 				other_selected_edge[1] += 2 * i
 			_change_edge_tile(other_selected_edge, source_id)
 	if current_perpindicular_offset != 0:
+		var total_length_diff = 0
 		_change_edge_tile(current_selected_edge, -1)
 		if current_selected_offset != 0:
 			var signn = sign(current_selected_offset)
@@ -259,11 +288,29 @@ func _draw_selected_edges():
 		var signn = sign(current_perpindicular_offset)
 		for i in range(0, current_perpindicular_offset, signn):
 			if is_selected_edge_alt:
+				if $UnknoterNode.get_edge_player(begin_vertex[0], begin_vertex[1] + 2 * i + signn) == current_player:
+					total_length_diff -= 1
+				else:
+					total_length_diff += 1
 				_change_edge_tile(begin_vertex + Vector2i(0, 2 * i + signn), FUTURE_EDGE_SOURCE_ID + 1 - is_selected_edge_alt)
+				if $UnknoterNode.get_edge_player(end_vertex[0], end_vertex[1] + 2 * i + signn) == current_player:
+					total_length_diff -= 1
+				else:
+					total_length_diff += 1
 				_change_edge_tile(end_vertex + Vector2i(0, 2 * i + signn), FUTURE_EDGE_SOURCE_ID + 1 - is_selected_edge_alt)
 			else:
+				if $UnknoterNode.get_edge_player(begin_vertex[0] + 2 * i + signn, begin_vertex[1]) == current_player:
+					total_length_diff -= 1
+				else:
+					total_length_diff += 1
 				_change_edge_tile(begin_vertex + Vector2i(2 * i + signn, 0), FUTURE_EDGE_SOURCE_ID + 1 - is_selected_edge_alt)
+				if $UnknoterNode.get_edge_player(end_vertex[0] + 2 * i + signn, end_vertex[1]) == current_player:
+					total_length_diff -= 1
+				else:
+					total_length_diff += 1
 				_change_edge_tile(end_vertex + Vector2i(2 * i + signn, 0), FUTURE_EDGE_SOURCE_ID + 1 - is_selected_edge_alt)
+		current_edge_move_cost = max(0, total_length_diff / 2)
+		_update_energy_cost_text()
 
 # TODO: works weirdly when hovering out of bounds, maybe fix, pretty pls?
 func _on_edge_hovered(edge: Vector2i) -> void:
@@ -291,6 +338,7 @@ func _on_edge_hovered(edge: Vector2i) -> void:
 			return
 		current_selected_offset = next_selected_offset
 		_draw_selected_edges()
+		_refresh_state()
 
 	if current_state == STATE.MOVING_EDGES:
 		var new_perpendicular_offset
@@ -309,6 +357,7 @@ func _on_edge_hovered(edge: Vector2i) -> void:
 			return
 		current_perpindicular_offset = new_perpendicular_offset
 		_draw_selected_edges()
+		_refresh_state()
 	if current_state == STATE.CONFIRM_EDGES_MOVE:
 		pass
 
@@ -327,12 +376,10 @@ func _on_edge_pressed(edge) -> void:
 		current_perpindicular_offset = 0
 		_change_edge_tile(edge, EDGE_TILE_HOVERED + is_selected_edge_alt)
 	if current_state == STATE.MOVING_EDGES:
-		$UI/MarginContainer/HBoxContainer/CancelButton.visible = true
 		if current_perpindicular_offset == 0:
 			return
 		current_state = STATE.CONFIRM_EDGES_MOVE
-		$UI/MarginContainer/HBoxContainer/CancelButton.visible = true
-		$UI/MarginContainer/HBoxContainer/ConfirmButton.visible = true
+		_refresh_state()
 
 func _on_edge_unpressed(edge) -> void:
 	if current_state == STATE.SELECTING_EDGES:
@@ -382,5 +429,6 @@ func _on_vertex_pressed(vertex) -> void:
 	if current_state == STATE.SELECT_VERTEX or current_state == STATE.CONFIRM_VERTEX:
 		current_state = STATE.CONFIRM_VERTEX
 		current_selected_vertex = vertex
+		_clear_vertex_tiles()
 		_refresh_state()
 		_change_vertex_tile(vertex, VERTEX_TILE_SELECTED)

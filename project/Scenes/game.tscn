@@ -28,7 +28,7 @@
 [ext_resource type="Texture2D" uid="uid://tn4qo46xgkfq" path="res://assets/tiles/edgeTileColorAlt.png" id="12_0jeec"]
 [ext_resource type="AudioStream" uid="uid://c3mtpg4ti4sgs" path="res://assets/sound/gameMusic.mp3" id="20_8ngip"]
 [ext_resource type="PackedScene" uid="uid://cijaooi8ujuay" path="res://Scenes/paused_menu.tscn" id="25_71ny5"]
-[ext_resource type="PackedScene" uid="uid://demjnjxb7g2ph" path="res://Scenes/game_over.tscn" id="29_othqo"]
+[ext_resource type="PackedScene" uid="uid://blpwdymp7skgw" path="res://Scenes/game_over.tscn" id="29_othqo"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xu0hk"]
 
@@ -217,6 +217,8 @@ sources/2 = SubResource("TileSetAtlasSource_jnpln")
 script = ExtResource("1_7wbfd")
 WIDTH_TILES = 20
 HEIGHT_TILES = 20
+STARTING_ENERGY = 5
+ENERGY_PER_TURN = 2
 
 [node name="UnknoterNode" type="UnknoterNode" parent="."]
 
