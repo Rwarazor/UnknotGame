@@ -37,6 +37,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -26.0
+offset_bottom = 8.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_0k1x3")
@@ -44,11 +46,10 @@ expand_mode = 1
 
 [node name="GameOverLabel" type="Label" parent="."]
 layout_mode = 2
-offset_left = 1.0
-offset_top = 157.0
-offset_right = 1153.0
-offset_bottom = 226.0
-theme_override_font_sizes/font_size = 50
+offset_top = 135.0
+offset_right = 1152.0
+offset_bottom = 204.0
+theme_override_font_sizes/font_size = 45
 text = "Игра окончена!"
 horizontal_alignment = 1
 
@@ -79,7 +80,27 @@ horizontal_alignment = 1
 
 [node name="Separator2" type="Control" parent="VBoxContainer"]
 auto_translate_mode = 1
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="SpentEnergyLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0.792157, 0, 0, 0.72549)
+theme_override_font_sizes/font_size = 20
+text = "Энергии потрачено:"
+horizontal_alignment = 1
+
+[node name="GainedEnergyLabel" type="Label" parent="VBoxContainer"]
+auto_translate_mode = 1
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0.976471, 0, 0.564706)
+theme_override_font_sizes/font_size = 20
+text = "Энергии получено:"
+horizontal_alignment = 1
+
+[node name="Separator3" type="Control" parent="VBoxContainer"]
+auto_translate_mode = 1
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
 [node name="BackToMenuButton" type="Button" parent="VBoxContainer"]
@@ -100,7 +121,7 @@ theme_override_font_sizes/font_size = 25
 text = "Новая игра"
 
 [node name="Separator" type="Control" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 80)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
 [node name="ExitButton" type="Button" parent="VBoxContainer"]

@@ -217,7 +217,7 @@ sources/2 = SubResource("TileSetAtlasSource_jnpln")
 script = ExtResource("1_7wbfd")
 WIDTH_TILES = 20
 HEIGHT_TILES = 20
-STARTING_ENERGY = 15
+STARTING_ENERGY = 5
 ENERGY_PER_TURN = 2
 
 [node name="UnknoterNode" type="UnknoterNode" parent="."]
