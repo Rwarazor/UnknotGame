@@ -44,7 +44,7 @@ func _refresh_state():
 	$Zoom.allow_dragging = (current_state == STATE.DRAG)
 
 func _redraw_field():
-	for player in range(Global.players):
+	for player in range(Global.players + Global.virtual_players):
 		$EdgeTileMap.clear_layer(1 + player)
 		$VertexTileMap.clear_layer(player)
 
@@ -122,22 +122,27 @@ func _update_labels():
 	$UI/MarginContainer/VBoxContainer2/EnergyLabel.add_theme_color_override("font_color", player_colors[current_player])
 
 func _save() -> void:
-	$UnknoterNode.set_current_player(current_player)
+	$UnknoterNode.set_param("current_player", current_player)
 	$UnknoterNode.save("user://game.save")
 
 func _load() -> void:
 	$UnknoterNode.load("user://game.save")
-	WIDTH_TILES = $UnknoterNode.get_width()
-	HEIGHT_TILES = $UnknoterNode.get_height()
-	Global.players = $UnknoterNode.get_players()
-	current_player = $UnknoterNode.get_current_player()
+	WIDTH_TILES = $UnknoterNode.get_param("width")
+	HEIGHT_TILES = $UnknoterNode.get_param("height")
+	Global.players = $UnknoterNode.get_param("players")
+	Global.virtual_players = $UnknoterNode.get_param("virtual_players")
+	current_player = $UnknoterNode.get_param("current_player")
 
 func _ready() -> void:
 	if Global.do_load:
 		Global.do_load = false
 		_load()
 	else:
-		$UnknoterNode.reset(Global.players, WIDTH_TILES, HEIGHT_TILES)
+		$UnknoterNode.set_param("players", Global.players)
+		$UnknoterNode.set_param("virtual_players", Global.virtual_players)
+		$UnknoterNode.set_param("width", WIDTH_TILES)
+		$UnknoterNode.set_param("height", HEIGHT_TILES)
+		$UnknoterNode.reset()
 
 	$VertexTileMap.reset(WIDTH_TILES, HEIGHT_TILES)
 	$EdgeTileMap.reset(WIDTH_TILES, HEIGHT_TILES)
@@ -161,6 +166,10 @@ func _ready() -> void:
 		$EdgeTileMap.set_layer_modulate(1 + player, color)
 		$VertexTileMap.add_layer(player)
 		$VertexTileMap.set_layer_modulate(player, color)
+
+	for player in range(Global.players, Global.players + Global.virtual_players):
+		$EdgeTileMap.add_layer(1 + player)
+		$VertexTileMap.add_layer(player)
 
 	_redraw_field()
 	_update_labels()
