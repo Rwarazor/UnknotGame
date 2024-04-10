@@ -22,7 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://cm4vjfpjdds5y" path="res://assets/icons/checkMark.png" id="8_c41o6"]
 [ext_resource type="Texture2D" uid="uid://dgbpjl0xpt5nn" path="res://assets/tiles/edgeTileFuture.png" id="9_k3tl7"]
 [ext_resource type="Script" path="res://Scripts/vertexTileMap.gd" id="9_l4svq"]
-[ext_resource type="Texture2D" uid="uid://bg5bnuywekwv6" path="res://assets/tiles/dotTileHovered.png" id="9_teopa"]
+[ext_resource type="Texture2D" uid="uid://smaud5la27ut" path="res://assets/tiles/dotTileHovered.png" id="9_teopa"]
 [ext_resource type="Texture2D" uid="uid://bpwcee1033k8j" path="res://assets/tiles/edgeTileFutureAlt.png" id="10_v2h7l"]
 [ext_resource type="Texture2D" uid="uid://cjvdiee0psnw1" path="res://assets/tiles/edgeTileColor.png" id="11_pmc3y"]
 [ext_resource type="Texture2D" uid="uid://tn4qo46xgkfq" path="res://assets/tiles/edgeTileColorAlt.png" id="12_0jeec"]
