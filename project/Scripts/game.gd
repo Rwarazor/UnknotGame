@@ -62,6 +62,14 @@ func _redraw_field():
 				if upper != -1:
 					$VertexTileMap.change_tile(upper, Vector2i(x, y), VERTEX_TILE_COLOR)
 
+func _check_win():
+	var winning_players = []
+	for player in range(Global.players):
+		if $UnknoterNode.has_player_won(player):
+			winning_players.append(player)
+	if not winning_players.is_empty():
+		print("Winning players: ", winning_players)
+
 func _on_back_to_menu_button_pressed():
 	button_click_sound.play()
 	await get_tree().create_timer(0.15).timeout
@@ -105,6 +113,7 @@ func _on_confirm_button_pressed():
 			current_selected_vertex[0],
 			current_selected_vertex[1]
 		)
+	_check_win()
 	current_state = STATE.DRAG
 	current_player = (current_player + 1) % Global.players
 	_refresh_state()
@@ -321,7 +330,6 @@ func _on_edge_pressed(edge) -> void:
 		current_state = STATE.CONFIRM_EDGES_MOVE
 		$UI/MarginContainer/HBoxContainer/CancelButton.visible = true
 		$UI/MarginContainer/HBoxContainer/ConfirmButton.visible = true
-		
 
 func _on_edge_unpressed(edge) -> void:
 	if current_state == STATE.SELECTING_EDGES:
@@ -373,4 +381,3 @@ func _on_vertex_pressed(vertex) -> void:
 		current_selected_vertex = vertex
 		_refresh_state()
 		_change_vertex_tile(vertex, VERTEX_TILE_SELECTED)
-
