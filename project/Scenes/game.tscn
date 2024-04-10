@@ -217,7 +217,7 @@ sources/2 = SubResource("TileSetAtlasSource_jnpln")
 script = ExtResource("1_7wbfd")
 WIDTH_TILES = 20
 HEIGHT_TILES = 20
-STARTING_ENERGY = 5
+STARTING_ENERGY = 15
 ENERGY_PER_TURN = 2
 
 [node name="UnknoterNode" type="UnknoterNode" parent="."]
@@ -232,7 +232,7 @@ script = ExtResource("2_4a8fq")
 [node name="MarginContainer" type="MarginContainer" parent="UI"]
 offset_left = 20.0
 offset_top = 28.0
-offset_right = 1150.0
+offset_right = 1113.0
 offset_bottom = 666.0
 size_flags_vertical = 8
 
@@ -292,6 +292,12 @@ auto_translate_mode = 1
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "Энергия: "
+
+[node name="EnergyCostLabel" type="Label" parent="UI/MarginContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0.90412, 0, 0.423776, 1)
+theme_override_font_sizes/font_size = 25
+text = "Нужно энергии:"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer"]
 custom_minimum_size = Vector2(200, 80)

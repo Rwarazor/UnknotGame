@@ -44,9 +44,9 @@ func _clear_field():
 func _refresh_state():
 	$UI/MarginContainer/HBoxContainer/CancelButton.visible = (
 		current_state in [STATE.MOVING_EDGES, STATE.CONFIRM_EDGES_MOVE, STATE.CONFIRM_VERTEX])
-	# TODO
-	#<Energy cost text>.visible = (
-	#	current_state in [STATE.MOVING_EDGES, STATE.CONFIRM_EDGES_MOVE])
+	$UI/MarginContainer/VBoxContainer2/EnergyCostLabel.visible = (
+		current_state in [STATE.MOVING_EDGES, STATE.CONFIRM_EDGES_MOVE])
+		
 	$UI/MarginContainer/HBoxContainer/ConfirmButton.visible = (
 		current_state == STATE.CONFIRM_VERTEX or (
 		current_state == STATE.CONFIRM_EDGES_MOVE and current_edge_move_cost <= player_energies[current_player]
@@ -151,8 +151,7 @@ func _update_labels():
 	$UI/MarginContainer/VBoxContainer2/EnergyLabel.add_theme_color_override("font_color", player_colors[current_player])
 
 func _update_energy_cost_text():
-	# TODO
-	pass
+	$UI/MarginContainer/VBoxContainer2/EnergyCostLabel.text = str("Энергии требуется: ", current_edge_move_cost)
 
 func _save() -> void:
 	for player in range(Global.players):
@@ -181,7 +180,8 @@ func _ready() -> void:
 		$UnknoterNode.set_param("width", WIDTH_TILES)
 		$UnknoterNode.set_param("height", HEIGHT_TILES)
 		$UnknoterNode.reset()
-
+		
+	$UI/MarginContainer/VBoxContainer2/EnergyCostLabel.visible = false
 	$VertexTileMap.reset(WIDTH_TILES, HEIGHT_TILES)
 	$EdgeTileMap.reset(WIDTH_TILES, HEIGHT_TILES)
 	_on_move_button_pressed()
