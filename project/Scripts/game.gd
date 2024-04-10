@@ -67,6 +67,9 @@ func _check_win():
 	for player in range(Global.players):
 		if $UnknoterNode.has_player_won(player):
 			winning_players.append(player)
+			get_node("CanvasLayer/GameOver")._set_label(player+1, player_colors[player])
+			get_node("CanvasLayer/GameOver").visible = true
+			
 	if not winning_players.is_empty():
 		print("Winning players: ", winning_players)
 
